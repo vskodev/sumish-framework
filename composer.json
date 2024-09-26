@@ -1,0 +1,29 @@
+{
+    "name": "sumish/framework",
+    "description": "Sumish is a micro and flexible PHP >=7 framework",
+    "keywords": ["microframework"],
+    "homepage": "http://sumish.xyz",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vitalii Skorobahatko",
+            "email": "vsko@email.ua"
+        }
+    ],
+    "require": {
+        "php": "^7.0",
+        "psr/container": "1.0.0"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/vskodev/sumish-framework.git"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Sumish\\": "src/Sumish"
+	}
+    }
+}
