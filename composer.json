@@ -1,6 +1,6 @@
 {
     "name": "sumish/framework",
-    "description": "Sumish is a micro and flexible PHP >=7 framework",
+    "description": "Sumish is a micro and flexible PHP framework",
     "keywords": ["microframework"],
     "homepage": "http://sumish.xyz",
     "type": "library",
