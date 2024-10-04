@@ -63,10 +63,6 @@ class Loader {
         return $this->container->route->execute($app, false);
     }
 
-    public function lib($name) {
-        return $this->library($name);
-    }
-
     public function library($library) {
         $class = ucfirst($library) . 'Library';
         $path = dirname($this->container->app->path);
@@ -88,6 +84,10 @@ class Loader {
         }
 
         return false;
+    }
+
+    public function lib($name) {
+        return $this->library($name);
     }
 
     public function libraries($libraries) {
