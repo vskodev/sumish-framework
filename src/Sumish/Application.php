@@ -131,28 +131,4 @@ class Application {
             die('<strong>System Error:</strong> ' . $message);
         }
     }
-
-    private static function loadClass($class) {
-        $namespace = __NAMESPACE__ . '\\';
-        $length = strlen($namespace);
-
-        if (strncmp($namespace, $class, $length) !== 0) {
-            return;
-        }
-
-        $class = substr($class, $length);
-        $file = __DIR__ . '/' . $class . '.php';
-
-        if (is_file($file)) {
-            require_once($file);
-        }
-    }
-
-    public static function registerAutoload($callback = null) {
-        if (is_null($callback)) {
-            return spl_autoload_register([__CLASS__, 'loadClass']);
-        } else {
-            return spl_autoload_register($callback);
-        }
-    }
 }
