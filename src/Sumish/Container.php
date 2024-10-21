@@ -183,7 +183,7 @@ class Container implements ArrayAccess, ContainerInterface {
         return $component;
     }
 
-    public function has($id) {
+    public function has(string $id): bool {
         return $this->hasComponent($id);
     }
 
