@@ -53,14 +53,17 @@ class Application {
      * @param array $config Массив конфигурации.
      * @return array Объединённый массив конфигурации.
      */
-    private function configure(array $config) {
+    private function configure(array $config): array {
         return array_replace_recursive(self::configDefault(), $config);
     }
 
     /**
-     * Инициализирует контейнер зависимостей.
+     * Инициализирует контейнер зависимостей приложения.
      *
-     * Создаёт контейнер и регистрирует конфигурацию.
+     * Этот метод создает контейнер и регистрирует в нем 
+     * конфигурацию приложения.
+     *
+     * @return void
      */
     private function initializeContainer() {
         $components = $this->config['components'] ?? [];
@@ -69,9 +72,12 @@ class Application {
     }
 
     /**
-     * Инициализирует маршруты.
+     * Инициализирует маршруты приложения.
      *
-     * Загружает маршруты из конфигурации.
+     * Этот метод загружает маршруты из конфигурации 
+     * и устанавливает их в контейнере маршрутов.
+     *
+     * @return void
      */
     private function initializeRoutes() {
         $routes = $this->config['routes'] ?? [];
@@ -79,9 +85,12 @@ class Application {
     }
 
     /**
-     * Инициализирует библиотеки.
+     * Инициализирует библиотеки приложения.
      *
-     * Загружает библиотеки из конфигурации.
+     * Этот метод загружает библиотеки из конфигурации 
+     * и устанавливает их в контейнере.
+     *
+     * @return void
      */
     private function initializeLibraries() {
         $libraries = $this->config['libraries'] ?? [];
@@ -89,9 +98,12 @@ class Application {
     }
 
     /**
-     * Настраивает ответ.
+     * Настраивает объект ответа приложения.
      *
-     * Устанавливает заголовки и параметры сжатия.
+     * Этот метод добавляет заголовки и устанавливает уровень сжатия 
+     * для ответа на основе конфигурации приложения.
+     *
+     * @return void
      */
     private function setupResponse() {
         $this->container->response->addHeaders($this->config['headers'] ?? []);
@@ -101,7 +113,12 @@ class Application {
     /**
      * Запускает приложение.
      *
-     * Проверяет наличие контроллера и вызывает его метод dispatch.
+     * Этот метод проверяет, установлен ли контроллер, и выполняет 
+     * его метод dispatch для обработки запроса. Если контроллер 
+     * не установлен, вызывается метод ошибки с кодом 404. 
+     * Затем инициализируется объект ответа.
+     *
+     * @return void
      */
     public function run() {
         if ($this->container->controller) {
@@ -114,9 +131,13 @@ class Application {
     }
 
     /**
-     * Обрабатывает ошибки и устанавливает сообщение об ошибке в ответ.
+     * Обрабатывает ошибки приложения.
      *
-     * @param int $status Код статуса ошибки.
+     * Этот метод устанавливает сообщение об ошибке в зависимости 
+     * от переданного кода состояния и выводит его через объект ответа.
+     *
+     * @param int $status Код состояния ошибки.
+     * @return void
      */
     private function error($status) {
         $errorText = 'Error ';
@@ -140,11 +161,14 @@ class Application {
     }
 
     /**
-     * Возвращает массив компонентов по умолчанию.
+     * Возвращает массив компонентов по умолчанию для контейнера.
      *
-     * @return array Массив компонентов.
+     * Этот метод предоставляет стандартный набор компонентов, 
+     * которые могут быть использованы приложением.
+     *
+     * @return array Возвращает ассоциативный массив компонентов.
      */
-    public static function componentsDefault() {
+    public static function componentsDefault(): array {
         return [
             'load' => \Sumish\Loader::class,
             'route' => \Sumish\Router::class,
@@ -156,11 +180,15 @@ class Application {
     }
 
     /**
-     * Возвращает массив конфигурации по умолчанию.
+     * Возвращает массив конфигурации по умолчанию для приложения.
      *
-     * @return array Массив конфигурации.
+     * Этот метод предоставляет стандартный набор конфигурационных 
+     * параметров, которые могут быть использованы приложением 
+     * при его инициализации.
+     *
+     * @return array Возвращает ассоциативный массив конфигурации.
      */
-    public static function configDefault() {
+    public static function configDefault(): array {
         return [
             'routes' => ['/' => 'home'],
             'libraries' => [],
