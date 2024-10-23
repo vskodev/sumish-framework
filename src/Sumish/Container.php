@@ -29,50 +29,77 @@ class Container implements ContainerInterface {
      *
      * @var array
      */
+<<<<<<< HEAD
     private array $bindings = [];
+=======
+    private $bindings = [];
+>>>>>>> 721b66b (Multiple improvements)
 
     /**
      * Массив определений компонентов.
      *
      * @var array
      */
+<<<<<<< HEAD
     private array $definitions = [];
+=======
+    private $definitions = [];
+>>>>>>> 721b66b (Multiple improvements)
 
     /**
      * Массив экземпляров компонентов.
      *
      * @var array
      */
+<<<<<<< HEAD
     private array $instances = [];
+=======
+    private $instances = [];
+>>>>>>> 721b66b (Multiple improvements)
 
     /**
      * Массив значений компонентов.
      *
      * @var array
      */
+<<<<<<< HEAD
     private array $values = [];
+=======
+    private $values = [];
+>>>>>>> 721b66b (Multiple improvements)
 
     /**
      * Массив параметров для компонентов.
      *
      * @var array
      */
+<<<<<<< HEAD
     private array $parameters = [];
+=======
+    private $parameters = [];
+>>>>>>> 721b66b (Multiple improvements)
 
     /**
      * Конструктор класса Container.
      *
+<<<<<<< HEAD
      * Этот метод инициализирует контейнер зависимостей с 
      * переданными компонентами.
      *
      * @param array $components Ассоциативный массив компонентов для контейнера.
      * @return void
+=======
+     * Инициализирует контейнер с заданными компонентами.
+     *
+     * @param array $components Массив компонентов для инициализации.
+>>>>>>> 721b66b (Multiple improvements)
      */
     public function __construct(array $components = []) {
         $this->push($components);
     }
 
     /**
+<<<<<<< HEAD
      * Магический метод для получения значения по идентификатору.
      *
      * Этот метод позволяет получать значения из контейнера, 
@@ -83,10 +110,19 @@ class Container implements ContainerInterface {
      *               или null, если компонент не найден.
      */
     public function __get(string $id) {
+=======
+     * Получает компонент по идентификатору.
+     *
+     * @param string $id Идентификатор компонента.
+     * @return mixed Возвращает экземпляр компонента.
+     */
+    public function __get($id) {
+>>>>>>> 721b66b (Multiple improvements)
         return $this->get($id);
     }
 
     /**
+<<<<<<< HEAD
      * Магический метод для установки значения по идентификатору.
      *
      * Этот метод позволяет устанавливать значения в контейнер, 
@@ -97,10 +133,19 @@ class Container implements ContainerInterface {
      * @return void
      */
     public function __set(string $id, $component) {
+=======
+     * Устанавливает компонент по идентификатору.
+     *
+     * @param string $id Идентификатор компонента.
+     * @param mixed $component Экземпляр компонента.
+     */
+    public function __set($id, $component) {
+>>>>>>> 721b66b (Multiple improvements)
         $this->set($id, $component);
     }
 
     /**
+<<<<<<< HEAD
      * Магический метод для вызова недоступных методов.
      *
      * Этот метод позволяет вызывать методы контейнера, 
@@ -114,10 +159,20 @@ class Container implements ContainerInterface {
      *               или false, если метод не найден.
      */
     public function __call(string $id, array $parameters) {
+=======
+     * Вызывает замыкание или метод по идентификатору.
+     *
+     * @param string $id Идентификатор компонента или метода.
+     * @param array $parameters Параметры для вызова.
+     * @return mixed Результат вызова.
+     */
+    public function __call($id, $parameters) {
+>>>>>>> 721b66b (Multiple improvements)
         return $this->resolveCallback($id, $parameters);
     }
 
     /**
+<<<<<<< HEAD
      * Создает экземпляр контейнера с переданными компонентами.
      *
      * Этот метод использует шаблон одиночки (singleton) для 
@@ -128,6 +183,14 @@ class Container implements ContainerInterface {
      * @return Container Возвращает экземпляр контейнера.
      */
     public static function create(array $components = []): Container {
+=======
+     * Создаёт контейнер зависимостей.
+     *
+     * @param array $components Массив компонентов для инициализации.
+     * @return static Возвращает экземпляр контейнера.
+     */
+    public static function create(array $components = []) {
+>>>>>>> 721b66b (Multiple improvements)
         static $container = null;
 
         if (is_null($container)) {
@@ -140,6 +203,7 @@ class Container implements ContainerInterface {
     /**
      * Получает компонент по идентификатору.
      *
+<<<<<<< HEAD
      * Этот метод извлекает параметры для указанного идентификатора 
      * и возвращает соответствующий компонент из контейнера.
      *
@@ -148,11 +212,22 @@ class Container implements ContainerInterface {
      *               или false, если компонент не найден.
      */
     public function get(string $id) {
+=======
+     * Этот метод ищет и возвращает экземпляр компонента, зарегистрированного в контейнере, 
+     * используя указанный идентификатор.
+     *
+     * @param string $id Идентификатор компонента, который необходимо получить.
+     * @return mixed Возвращает экземпляр компонента, если он найден, 
+     *               или false, если компонент не зарегистрирован в контейнере.
+     */
+    public function get($id) {
+>>>>>>> 721b66b (Multiple improvements)
         $parameters = $this->getParameters($id);
         return $this->resolveDefinition($id, $parameters);
     }
 
     /**
+<<<<<<< HEAD
      * Устанавливает компонент в контейнер.
      *
      * Этот метод регистрирует компонент под заданным идентификатором, 
@@ -164,12 +239,26 @@ class Container implements ContainerInterface {
      * @return void
      */
     public function set(string $id, $component, array $parameters = []) {
+=======
+     * Устанавливает компонент в контейнере.
+     *
+     * Этот метод регистрирует новый компонент с заданным идентификатором в контейнере.
+     * Если компонент с указанным идентификатором уже существует, метод ничего не делает.
+     * Это позволяет избежать перезаписи уже зарегистрированных компонентов.
+     *
+     * @param string $id Идентификатор компонента, который нужно установить.
+     * @param mixed $component Экземпляр или определение компонента, который нужно зарегистрировать.
+     * @param array $parameters Параметры, которые могут быть переданы компоненту (по умолчанию пустой массив).
+     */
+    public function set($id, $component, $parameters = []) {
+>>>>>>> 721b66b (Multiple improvements)
         if (!$this->has($id)) {
             $this->register($id, $component, $parameters);
         }
     }
 
     /**
+<<<<<<< HEAD
      * Сбрасывает контейнер к начальному состоянию.
      *
      * Этот метод очищает все привязки, определения, экземпляры, 
@@ -180,12 +269,25 @@ class Container implements ContainerInterface {
      *               поддержки цепочки вызовов.
      */
     public function reset(): self {
+=======
+     * Сбрасывает состояние контейнера.
+     *
+     * Этот метод очищает все привязки, определения, экземпляры, значения и параметры, 
+     * зарегистрированные в контейнере. Он полезен для восстановления контейнера 
+     * к первоначальному состоянию, что позволяет избежать конфликтов 
+     * между компонентами при повторной инициализации.
+     *
+     * @return $this Возвращает текущий экземпляр контейнера для удобства цепочного вызова.
+     */
+    public function reset() {
+>>>>>>> 721b66b (Multiple improvements)
         $this->bindings = [];
         $this->definitions = [];
         $this->instances = [];
         $this->values = [];
         $this->parameters = [];
 
+<<<<<<< HEAD
         return $this; // Возвращает текущий экземпляр
     }
 
@@ -199,6 +301,22 @@ class Container implements ContainerInterface {
      * @param array $components Ассоциативный массив компонентов, 
      *                          которые нужно добавить в контейнер.
      * @return void
+=======
+        return $this;
+    }
+
+    /**
+     * Добавляет массив компонентов в контейнер.
+     *
+     * Этот метод принимает массив компонентов и регистрирует их в контейнере 
+     * с соответствующими идентификаторами. Каждый компонент будет 
+     * зарегистрирован с помощью метода `set`, который проверяет, 
+     * существует ли уже компонент с данным идентификатором.
+     *
+     * @param array $components Ассоциативный массив компонентов, 
+     *                          где ключи представляют идентификаторы, 
+     *                          а значения — соответствующие компоненты.
+>>>>>>> 721b66b (Multiple improvements)
      */
     public function push(array $components = []) {
         foreach ($components as $id => $component) {
@@ -209,6 +327,7 @@ class Container implements ContainerInterface {
     /**
      * Регистрирует компонент в контейнере.
      *
+<<<<<<< HEAD
      * Этот метод сохраняет компонент под указанным идентификатором 
      * и управляет его типом (привязка, определение или экземпляр).
      *
@@ -218,6 +337,18 @@ class Container implements ContainerInterface {
      * @return void
      */
     public function register(string $id, $component, array $parameters = []) {
+=======
+     * Этот метод добавляет компонент с указанным идентификатором в контейнер 
+     * и определяет его тип (привязка, определение или экземпляр). 
+     * Если компонент является замыканием, он связывается с текущим контейнером.
+     * Метод также подготавливает и сохраняет параметры для компонента.
+     *
+     * @param string $id Идентификатор компонента, который нужно зарегистрировать.
+     * @param mixed $component Экземпляр компонента, определение класса или замыкание.
+     * @param array $parameters Параметры, которые могут быть переданы компоненту (по умолчанию пустой массив).
+     */
+    public function register($id, $component, $parameters = []) {
+>>>>>>> 721b66b (Multiple improvements)
         if ($this->isBinding($component)) {
             $component = $component->bindTo($this);
             $this->bindings[$id] = true;
@@ -238,6 +369,7 @@ class Container implements ContainerInterface {
     }
 
     /**
+<<<<<<< HEAD
      * Удаляет компонент из контейнера по идентификатору.
      *
      * Этот метод удаляет все связанные данные компонента, включая 
@@ -247,6 +379,18 @@ class Container implements ContainerInterface {
      * @return void
      */
     public function unregister(string $id) {
+=======
+     * Удаляет компонент из контейнера.
+     *
+     * Этот метод удаляет компонент с указанным идентификатором из контейнера. 
+     * Он очищает все привязки, определения, экземпляры, значения и параметры 
+     * для данного идентификатора, что позволяет освободить ресурсы 
+     * и предотвратить возможные конфликты в будущем.
+     *
+     * @param string $id Идентификатор компонента, который нужно удалить.
+     */
+    public function unregister($id) {
+>>>>>>> 721b66b (Multiple improvements)
         unset(
             $this->bindings[$id],
             $this->definitions[$id],
@@ -257,6 +401,7 @@ class Container implements ContainerInterface {
     }
 
     /**
+<<<<<<< HEAD
      * Разрешает компонент по идентификатору и параметрам.
      *
      * Этот метод возвращает компонент, соответствующий указанному 
@@ -271,6 +416,22 @@ class Container implements ContainerInterface {
      *               если компонент не найден.
      */
     public function resolve(string $id, $parameters = [], bool $callback = false) {
+=======
+     * Разрешает компонент по идентификатору.
+     *
+     * Этот метод ищет и возвращает экземпляр компонента, зарегистрированного 
+     * в контейнере, по указанному идентификатору. Метод обрабатывает 
+     * компоненты, которые могут быть привязками, определениями или экземплярами. 
+     * При необходимости он вызывает замыкания с параметрами.
+     *
+     * @param string $id Идентификатор компонента, который нужно разрешить.
+     * @param array $parameters Параметры для передачи при создании экземпляра (по умолчанию пустой массив).
+     * @param bool $callback Указывает, нужно ли вызывать замыкание, связанное с компонентом.
+     * @return mixed Возвращает экземпляр компонента, если он успешно разрешен, 
+     *               или false, если компонент не найден.
+     */
+    public function resolve($id, $parameters = [], $callback = false) {
+>>>>>>> 721b66b (Multiple improvements)
         if ($this->has($id)) {
             $component = $this->getComponent($id);
 
@@ -299,6 +460,7 @@ class Container implements ContainerInterface {
     }
 
     /**
+<<<<<<< HEAD
      * Разрешает определение компонента по идентификатору и параметрам.
      *
      * Этот метод вызывает метод разрешения для получения 
@@ -311,10 +473,26 @@ class Container implements ContainerInterface {
      *               если компонент не найден.
      */
     public function resolveDefinition(string $id, $parameters = []) {
+=======
+     * Разрешает определение компонента по его идентификатору.
+     *
+     * Этот метод вызывает основной метод `resolve`, передавая ему 
+     * идентификатор компонента и параметры. Он предназначен для 
+     * упрощения разрешения определений компонентов, обеспечивая 
+     * единообразный интерфейс для их получения.
+     *
+     * @param string $id Идентификатор компонента, который нужно разрешить.
+     * @param array $parameters Параметры для передачи при разрешении компонента (по умолчанию пустой массив).
+     * @return mixed Возвращает экземпляр компонента, если он успешно разрешен, 
+     *               или false, если компонент не найден.
+     */
+    public function resolveDefinition($id, $parameters = []) {
+>>>>>>> 721b66b (Multiple improvements)
         return $this->resolve($id, $parameters);
     }
 
     /**
+<<<<<<< HEAD
      * Разрешает вызов метода по идентификатору и параметрам.
      *
      * Этот метод вызывает метод разрешения для получения 
@@ -327,10 +505,27 @@ class Container implements ContainerInterface {
      *               если компонент не найден.
      */
     public function resolveCallback(string $id, array $parameters = []) {
+=======
+     * Разрешает вызов по идентификатору с параметрами.
+     *
+     * Этот метод вызывает основной метод `resolve`, передавая ему 
+     * идентификатор компонента, параметры и устанавливая флаг 
+     * `callback` в значение true. Это позволяет вызывать 
+     * замыкания (привязки), зарегистрированные в контейнере, 
+     * с соответствующими параметрами.
+     *
+     * @param string $id Идентификатор компонента или замыкания, которое нужно разрешить.
+     * @param array $parameters Параметры для передачи при вызове компонента (по умолчанию пустой массив).
+     * @return mixed Возвращает результат вызова замыкания, если оно успешно разрешено, 
+     *               или false, если компонент не найден.
+     */
+    public function resolveCallback($id, $parameters = []) {
+>>>>>>> 721b66b (Multiple improvements)
         return $this->resolve($id, $parameters, true);
     }
 
     /**
+<<<<<<< HEAD
      * Создает экземпляр компонента с указанными параметрами.
      *
      * Этот метод использует рефлексию для создания нового экземпляра 
@@ -342,6 +537,22 @@ class Container implements ContainerInterface {
      * @throws ReflectionException Если не удается создать экземпляр компонента.
      */
     public function build(string $component, ?array $parameters = null): object {
+=======
+     * Создаёт экземпляр компонента.
+     *
+     * Этот метод использует отражение (Reflection) для создания 
+     * нового экземпляра указанного компонента. Он проверяет, 
+     * может ли класс быть инстанцирован, и вызывает конструктор 
+     * с необходимыми параметрами, если они указаны. Если 
+     * конструктор отсутствует, создаётся экземпляр без его вызова.
+     *
+     * @param string $component Имя класса компонента, который нужно создать.
+     * @param array|null $parameters Параметры для конструктора (по умолчанию null).
+     * @return object|null Возвращает экземпляр компонента, если он успешно создан, 
+     *                     или null, если класс не может быть инстанцирован.
+     */
+    public function build($component, $parameters = null) {
+>>>>>>> 721b66b (Multiple improvements)
         $reflector = new ReflectionClass($component);
 
         if ($reflector->isInstantiable()) {
@@ -362,6 +573,7 @@ class Container implements ContainerInterface {
     }
 
     /**
+<<<<<<< HEAD
      * Создает и регистрирует экземпляр компонента по идентификатору.
      *
      * Этот метод создает новый экземпляр компонента и 
@@ -374,6 +586,21 @@ class Container implements ContainerInterface {
      * @throws Exception Если не удается создать экземпляр компонента.
      */
     public function make(string $id, $component, $parameters = []): object {
+=======
+     * Создаёт и регистрирует экземпляр компонента.
+     *
+     * Этот метод создает экземпляр указанного компонента и 
+     * регистрирует его в контейнере по заданному идентификатору. 
+     * Он помечает компонент как экземпляр, позволяя избежать 
+     * повторного создания и использованию уже созданного экземпляра.
+     *
+     * @param string $id Идентификатор компонента, который нужно зарегистрировать.
+     * @param mixed $component Экземпляр компонента или определение класса.
+     * @param array $parameters Параметры для передачи при создании экземпляра (по умолчанию пустой массив).
+     * @return object Возвращает экземпляр компонента, который был создан и зарегистрирован.
+     */
+    public function make($id, $component, $parameters = []) {
+>>>>>>> 721b66b (Multiple improvements)
         $this->instances[$id] = true;
         unset($this->definitions[$id]);
 
@@ -386,7 +613,13 @@ class Container implements ContainerInterface {
     /**
      * Проверяет, существует ли компонент с данным идентификатором.
      *
+<<<<<<< HEAD
      * Этот метод является оберткой для метода hasComponent.
+=======
+     * Этот метод определяет, зарегистрирован ли компонент в контейнере 
+     * по указанному идентификатору. Он предоставляет простой интерфейс 
+     * для проверки наличия компонента без получения его значения.
+>>>>>>> 721b66b (Multiple improvements)
      *
      * @param string $id Идентификатор компонента, который нужно проверить.
      * @return bool Возвращает true, если компонент существует, иначе false.
@@ -396,6 +629,7 @@ class Container implements ContainerInterface {
     }
 
     /**
+<<<<<<< HEAD
      * Проверяет, существует ли компонент с заданным идентификатором.
      *
      * Этот метод возвращает true, если компонент зарегистрирован 
@@ -405,10 +639,23 @@ class Container implements ContainerInterface {
      * @return bool Возвращает true, если компонент существует, иначе false.
      */
     public function hasComponent(string $id): bool {
+=======
+     * Проверяет, существует ли компонент в контейнере.
+     *
+     * Этот метод определяет, зарегистрирован ли компонент в контейнере 
+     * по указанному идентификатору. Он проверяет массив значений, 
+     * хранящий зарегистрированные компоненты.
+     *
+     * @param string $id Идентификатор компонента, который нужно проверить.
+     * @return bool Возвращает true, если компонент существует, иначе false.
+     */
+    public function hasComponent($id) {
+>>>>>>> 721b66b (Multiple improvements)
         return isset($this->values[$id]);
     }
 
     /**
+<<<<<<< HEAD
      * Проверяет, существует ли привязка с данным идентификатором.
      *
      * Этот метод определяет, зарегистрирована ли привязка 
@@ -418,10 +665,23 @@ class Container implements ContainerInterface {
      * @return bool Возвращает true, если привязка существует, иначе false.
      */
     public function hasBinding(string $id): bool {
+=======
+     * Проверяет, существует ли привязка для данного идентификатора.
+     *
+     * Этот метод определяет, зарегистрировано ли замыкание (привязка) 
+     * в контейнере по указанному идентификатору. Он проверяет массив 
+     * привязок, чтобы определить наличие соответствующей записи.
+     *
+     * @param string $id Идентификатор компонента, для которого нужно проверить привязку.
+     * @return bool Возвращает true, если привязка существует, иначе false.
+     */
+    public function hasBinding($id) {
+>>>>>>> 721b66b (Multiple improvements)
         return isset($this->bindings[$id]);
     }
 
     /**
+<<<<<<< HEAD
      * Проверяет, существует ли определение с данным идентификатором.
      *
      * Этот метод определяет, зарегистрировано ли определение 
@@ -431,10 +691,23 @@ class Container implements ContainerInterface {
      * @return bool Возвращает true, если определение существует, иначе false.
      */
     public function hasDefinition(string $id): bool {
+=======
+     * Проверяет, существует ли определение для данного идентификатора.
+     *
+     * Этот метод определяет, зарегистрировано ли определение компонента 
+     * в контейнере по указанному идентификатору. Он проверяет массив 
+     * определений, чтобы установить наличие соответствующей записи.
+     *
+     * @param string $id Идентификатор компонента, для которого нужно проверить определение.
+     * @return bool Возвращает true, если определение существует, иначе false.
+     */
+    public function hasDefinition($id) {
+>>>>>>> 721b66b (Multiple improvements)
         return isset($this->definitions[$id]);
     }
 
     /**
+<<<<<<< HEAD
      * Проверяет, существует ли экземпляр с данным идентификатором.
      *
      * Этот метод определяет, зарегистрирован ли экземпляр 
@@ -444,24 +717,50 @@ class Container implements ContainerInterface {
      * @return bool Возвращает true, если экземпляр существует, иначе false.
      */
     public function hasInstance(string $id): bool {
+=======
+     * Проверяет, существует ли экземпляр для данного идентификатора.
+     *
+     * Этот метод определяет, зарегистрирован ли экземпляр компонента 
+     * в контейнере по указанному идентификатору. Он проверяет массив 
+     * экземпляров, чтобы установить наличие соответствующей записи.
+     *
+     * @param string $id Идентификатор компонента, для которого нужно проверить экземпляр.
+     * @return bool Возвращает true, если экземпляр существует, иначе false.
+     */
+    public function hasInstance($id) {
+>>>>>>> 721b66b (Multiple improvements)
         return isset($this->instances[$id]);
     }
 
     /**
+<<<<<<< HEAD
      * Проверяет, является ли компонент привязкой.
      *
      * Этот метод определяет, является ли переданный компонент 
      * экземпляром Closure (замыкания), что указывает на то, 
      * что он может быть использован как привязка в контейнере.
+=======
+     * Проверяет, является ли компонент привязкой (Closure).
+     *
+     * Этот метод определяет, представляет ли данный компонент замыкание 
+     * (Closure), что указывает на то, что он зарегистрирован как привязка 
+     * в контейнере. Это полезно для различения между обычными компонентами 
+     * и замыканиями, которые могут быть вызваны позже.
+>>>>>>> 721b66b (Multiple improvements)
      *
      * @param mixed $component Компонент для проверки.
      * @return bool Возвращает true, если компонент является привязкой, иначе false.
      */
+<<<<<<< HEAD
     public function isBinding($component): bool {
+=======
+    public function isBinding($component) {
+>>>>>>> 721b66b (Multiple improvements)
         return $component instanceof Closure;
     }
 
     /**
+<<<<<<< HEAD
      * Проверяет, является ли компонент определением.
      *
      * Этот метод определяет, является ли переданный компонент 
@@ -471,10 +770,24 @@ class Container implements ContainerInterface {
      * @return bool Возвращает true, если компонент является определением, иначе false.
      */
     public function isDefinition($component): bool {
+=======
+     * Проверяет, является ли компонент определением класса.
+     *
+     * Этот метод определяет, является ли данный компонент строкой, 
+     * представляющей имя класса, который существует. Это полезно для 
+     * различения между обычными экземплярами объектов и 
+     * определениями классов, которые могут быть инстанцированы.
+     *
+     * @param mixed $component Компонент для проверки.
+     * @return bool Возвращает true, если компонент является определением класса, иначе false.
+     */
+    public function isDefinition($component) {
+>>>>>>> 721b66b (Multiple improvements)
         return is_string($component) && class_exists($component);
     }
 
     /**
+<<<<<<< HEAD
      * Проверяет, является ли компонент экземпляром.
      *
      * Этот метод определяет, является ли переданный компонент 
@@ -484,12 +797,26 @@ class Container implements ContainerInterface {
      * @return bool Возвращает true, если компонент является экземпляром, иначе false.
      */
     public function isInstance($component): bool {
+=======
+     * Проверяет, является ли компонент экземпляром объекта.
+     *
+     * Этот метод определяет, является ли данный компонент объектом, 
+     * и не является ли он привязкой (Closure). Это позволяет различать 
+     * между обычными экземплярами объектов и компонентами, которые 
+     * зарегистрированы как замыкания.
+     *
+     * @param mixed $component Компонент для проверки.
+     * @return bool Возвращает true, если компонент является экземпляром объекта, иначе false.
+     */
+    public function isInstance($component) {
+>>>>>>> 721b66b (Multiple improvements)
         return !$this->isBinding($component) && is_object($component);
     }
 
     /**
      * Получает компонент по идентификатору.
      *
+<<<<<<< HEAD
      * Этот метод возвращает компонент, зарегистрированный в контейнере 
      * по указанному идентификатору.
      *
@@ -512,12 +839,39 @@ class Container implements ContainerInterface {
      * @return void
      */
     public function setComponent(string $id, $component) {
+=======
+     * Этот метод извлекает и возвращает значение компонента, 
+     * зарегистрированного в контейнере, по указанному идентификатору.
+     * Он полезен для получения экземпляров компонентов, 
+     * которые уже были зарегистрированы в контейнере.
+     *
+     * @param string $id Идентификатор компонента, который нужно получить.
+     * @return mixed|null Возвращает экземпляр компонента, если он найден, 
+     *                    или null, если компонент с данным идентификатором не зарегистрирован.
+     */
+    public function getCompotent($id) {
+        return $this->values[$id];
+    }
+
+    /**
+     * Устанавливает компонент в контейнере.
+     *
+     * Этот метод регистрирует указанный компонент с заданным идентификатором 
+     * в контейнере, сохраняя его в массиве значений. Если компонент 
+     * является не нулевым, он будет добавлен в массив.
+     *
+     * @param string $id Идентификатор компонента, который нужно зарегистрировать.
+     * @param mixed $component Экземпляр компонента, который нужно установить.
+     */
+    public function setComponent($id, $component) {
+>>>>>>> 721b66b (Multiple improvements)
         if ($component) {
             $this->values[$id] = $component;
         }
     }
 
     /**
+<<<<<<< HEAD
      * Перечисляет все компоненты в контейнере.
      *
      * Этот метод проходит по всем зарегистрированным компонентам в контейнере
@@ -553,10 +907,24 @@ class Container implements ContainerInterface {
      *                    если параметры не найдены.
      */
     public function getParameters(string $id): ?array {
+=======
+     * Получает параметры для компонента по его идентификатору.
+     *
+     * Этот метод извлекает и возвращает параметры, связанные с 
+     * указанным идентификатором компонента. Если параметры не 
+     * были установлены, метод возвращает null.
+     *
+     * @param string $id Идентификатор компонента, для которого нужно получить параметры.
+     * @return array|null Возвращает массив параметров, если они найдены, 
+     *                    или null, если параметры для данного идентификатора не установлены.
+     */
+    public function getParameters($id) {
+>>>>>>> 721b66b (Multiple improvements)
         return $this->parameters[$id] ?? null;
     }
 
     /**
+<<<<<<< HEAD
      * Устанавливает параметры для компонента по заданному идентификатору.
      *
      * Этот метод сохраняет переданные параметры в массиве параметров 
@@ -567,12 +935,26 @@ class Container implements ContainerInterface {
      * @return void
      */
     public function setParameters(string $id, array $parameters = []) {
+=======
+     * Устанавливает параметры для компонента.
+     *
+     * Этот метод сохраняет указанные параметры в контейнере 
+     * под заданным идентификатором компонента. Если параметры 
+     * являются непустым массивом, они будут добавлены в массив 
+     * параметров для данного идентификатора.
+     *
+     * @param string $id Идентификатор компонента, для которого нужно установить параметры.
+     * @param array $parameters Параметры, которые нужно установить (по умолчанию пустой массив).
+     */
+    public function setParameters($id, $parameters = []) {
+>>>>>>> 721b66b (Multiple improvements)
         if ($parameters) {
             $this->parameters[$id] = $parameters;
         }
     }
 
     /**
+<<<<<<< HEAD
      * Подготавливает параметры для использования в контейнере.
      *
      * Этот метод принимает параметры и преобразует их в массив, 
@@ -583,6 +965,19 @@ class Container implements ContainerInterface {
      * @return array Возвращает массив подготовленных параметров.
      */
     public function prepareParameters($parameters): array {
+=======
+     * Подготавливает параметры для использования.
+     *
+     * Этот метод проверяет, являются ли переданные параметры массивом. 
+     * Если параметры не являются массивом, они оборачиваются в массив. 
+     * Это позволяет унифицировать способ передачи параметров, 
+     * обеспечивая, что они всегда будут представлены в виде массива.
+     *
+     * @param mixed $parameters Параметры, которые нужно подготовить.
+     * @return array Возвращает массив параметров.
+     */
+    public function prepareParameters($parameters) {
+>>>>>>> 721b66b (Multiple improvements)
         if (!is_array($parameters)) {
             $parameters = [$parameters];
         }
@@ -592,15 +987,81 @@ class Container implements ContainerInterface {
     /**
      * Вызывает замыкание с переданными параметрами.
      *
+<<<<<<< HEAD
      * Этот метод принимает замыкание и массив параметров, 
      * затем вызывает замыкание с использованием 
      * call_user_func_array для передачи параметров.
      *
      * @param Closure $callback Замыкание, которое нужно вызвать.
      * @param array $parameters Параметры, которые нужно передать в замыкание (по умолчанию пустой массив).
+=======
+     * Этот метод принимает замыкание (Closure) и массив параметров, 
+     * затем вызывает замыкание с использованием функции 
+     * `call_user_func_array`. Это позволяет динамически передавать 
+     * параметры в замыкание, обеспечивая гибкость при его вызове.
+     *
+     * @param Closure $callback Замыкание, которое нужно вызвать.
+     * @param array $parameters Параметры для передачи в замыкание (по умолчанию пустой массив).
+>>>>>>> 721b66b (Multiple improvements)
      * @return mixed Возвращает результат выполнения замыкания.
      */
     public function callBinding(Closure $callback, array $parameters = []) {
         return call_user_func_array($callback, $parameters);
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * Выводит список компонентов, зарегистрированных в контейнере.
+     *
+     * Этот метод формирует и возвращает строку с информацией о всех компонентах, 
+     * зарегистрированных в контейнере, включая их идентификаторы и типы. 
+     * Метод также может выводить список в формате, удобном для чтения, 
+     * если параметр verbose установлен в true.
+     *
+     * @param bool $verbose Указывает, нужно ли выводить список компонентов на экран (по умолчанию true).
+     * @return string Возвращает строку с информацией о компонентах в контейнере.
+     */
+    public function listComponents($verbose = true) {
+        $result = "\nid\t\tcomponent\n--\t\t---------\n";
+
+        foreach ($this->values as $id => $component) {
+            $containerType = 'unknown';
+            if ($this->isBinding($component)) { $containerType = 'binding'; }
+            if ($this->isDefinition($component)) { $containerType = 'definition'; }
+            if ($this->isInstance($component)) { $containerType = 'instance'; }
+            if (is_array($component)) { $containerType = 'array'; }
+            $result .= $id . "\t\t" . $containerType . "\n";
+        }
+
+        if ($verbose) {
+            echo '<pre>' . $result . '</pre>';
+        }
+
+        return $result;
+    }
+
+    /**
+     * Выполняет тестирование с возможностью получения аргументов.
+     *
+     * Этот метод принимает флаг и, в зависимости от его значения, 
+     * возвращает true или форматированную строку с аргументами, 
+     * переданными в метод. Если флаг установлен в true, метод 
+     * возвращает true, что может использоваться для проверки 
+     * успешности вызова. Если флаг false, метод возвращает 
+     * отформатированное представление всех переданных аргументов.
+     *
+     * @param bool $flag Указывает, следует ли возвращать true (по умолчанию false).
+     * @return mixed Возвращает true, если флаг установлен в true, 
+     *               или строку с аргументами в формате <pre> если флаг false.
+     */
+    public function test($flag = false) {
+        if ($flag) {
+            return true;
+        }
+
+        return '<pre>' . print_r(func_get_args(), true) . '</pre>';
+    }
+
+>>>>>>> 721b66b (Multiple improvements)
 }

@@ -53,17 +53,27 @@ class Application {
      * @param array $config Массив конфигурации.
      * @return array Объединённый массив конфигурации.
      */
+<<<<<<< HEAD
     private function configure(array $config): array {
+=======
+    private function configure(array $config) {
+>>>>>>> 721b66b (Multiple improvements)
         return array_replace_recursive(self::configDefault(), $config);
     }
 
     /**
+<<<<<<< HEAD
      * Инициализирует контейнер зависимостей приложения.
      *
      * Этот метод создает контейнер и регистрирует в нем 
      * конфигурацию приложения.
      *
      * @return void
+=======
+     * Инициализирует контейнер зависимостей.
+     *
+     * Создаёт контейнер и регистрирует конфигурацию.
+>>>>>>> 721b66b (Multiple improvements)
      */
     private function initializeContainer() {
         $components = $this->config['components'] ?? [];
@@ -72,12 +82,18 @@ class Application {
     }
 
     /**
+<<<<<<< HEAD
      * Инициализирует маршруты приложения.
      *
      * Этот метод загружает маршруты из конфигурации 
      * и устанавливает их в контейнере маршрутов.
      *
      * @return void
+=======
+     * Инициализирует маршруты.
+     *
+     * Загружает маршруты из конфигурации.
+>>>>>>> 721b66b (Multiple improvements)
      */
     private function initializeRoutes() {
         $routes = $this->config['routes'] ?? [];
@@ -85,12 +101,18 @@ class Application {
     }
 
     /**
+<<<<<<< HEAD
      * Инициализирует библиотеки приложения.
      *
      * Этот метод загружает библиотеки из конфигурации 
      * и устанавливает их в контейнере.
      *
      * @return void
+=======
+     * Инициализирует библиотеки.
+     *
+     * Загружает библиотеки из конфигурации.
+>>>>>>> 721b66b (Multiple improvements)
      */
     private function initializeLibraries() {
         $libraries = $this->config['libraries'] ?? [];
@@ -98,12 +120,18 @@ class Application {
     }
 
     /**
+<<<<<<< HEAD
      * Настраивает объект ответа приложения.
      *
      * Этот метод добавляет заголовки и устанавливает уровень сжатия 
      * для ответа на основе конфигурации приложения.
      *
      * @return void
+=======
+     * Настраивает ответ.
+     *
+     * Устанавливает заголовки и параметры сжатия.
+>>>>>>> 721b66b (Multiple improvements)
      */
     private function setupResponse() {
         $this->container->response->addHeaders($this->config['headers'] ?? []);
@@ -113,12 +141,16 @@ class Application {
     /**
      * Запускает приложение.
      *
+<<<<<<< HEAD
      * Этот метод проверяет, установлен ли контроллер, и выполняет 
      * его метод dispatch для обработки запроса. Если контроллер 
      * не установлен, вызывается метод ошибки с кодом 404. 
      * Затем инициализируется объект ответа.
      *
      * @return void
+=======
+     * Проверяет наличие контроллера и вызывает его метод dispatch.
+>>>>>>> 721b66b (Multiple improvements)
      */
     public function run() {
         if ($this->container->controller) {
@@ -131,6 +163,7 @@ class Application {
     }
 
     /**
+<<<<<<< HEAD
      * Обрабатывает ошибки приложения.
      *
      * Этот метод устанавливает сообщение об ошибке в зависимости 
@@ -138,6 +171,11 @@ class Application {
      *
      * @param int $status Код состояния ошибки.
      * @return void
+=======
+     * Обрабатывает ошибки и устанавливает сообщение об ошибке в ответ.
+     *
+     * @param int $status Код статуса ошибки.
+>>>>>>> 721b66b (Multiple improvements)
      */
     private function error($status) {
         $errorText = 'Error ';
@@ -161,6 +199,7 @@ class Application {
     }
 
     /**
+<<<<<<< HEAD
      * Возвращает массив компонентов по умолчанию для контейнера.
      *
      * Этот метод предоставляет стандартный набор компонентов, 
@@ -169,6 +208,13 @@ class Application {
      * @return array Возвращает ассоциативный массив компонентов.
      */
     public static function componentsDefault(): array {
+=======
+     * Возвращает массив компонентов по умолчанию.
+     *
+     * @return array Массив компонентов.
+     */
+    public static function componentsDefault() {
+>>>>>>> 721b66b (Multiple improvements)
         return [
             'load' => \Sumish\Loader::class,
             'route' => \Sumish\Router::class,
@@ -180,6 +226,7 @@ class Application {
     }
 
     /**
+<<<<<<< HEAD
      * Возвращает массив конфигурации по умолчанию для приложения.
      *
      * Этот метод предоставляет стандартный набор конфигурационных 
@@ -189,6 +236,13 @@ class Application {
      * @return array Возвращает ассоциативный массив конфигурации.
      */
     public static function configDefault(): array {
+=======
+     * Возвращает массив конфигурации по умолчанию.
+     *
+     * @return array Массив конфигурации.
+     */
+    public static function configDefault() {
+>>>>>>> 721b66b (Multiple improvements)
         return [
             'routes' => ['/' => 'home'],
             'libraries' => [],
