@@ -30,10 +30,14 @@ class Container implements ContainerInterface {
      * @var array
      */
 <<<<<<< HEAD
+<<<<<<< HEAD
     private array $bindings = [];
 =======
     private $bindings = [];
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    private array $bindings = [];
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
 
     /**
      * Массив определений компонентов.
@@ -41,10 +45,14 @@ class Container implements ContainerInterface {
      * @var array
      */
 <<<<<<< HEAD
+<<<<<<< HEAD
     private array $definitions = [];
 =======
     private $definitions = [];
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    private array $definitions = [];
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
 
     /**
      * Массив экземпляров компонентов.
@@ -52,10 +60,14 @@ class Container implements ContainerInterface {
      * @var array
      */
 <<<<<<< HEAD
+<<<<<<< HEAD
     private array $instances = [];
 =======
     private $instances = [];
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    private array $instances = [];
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
 
     /**
      * Массив значений компонентов.
@@ -63,10 +75,14 @@ class Container implements ContainerInterface {
      * @var array
      */
 <<<<<<< HEAD
+<<<<<<< HEAD
     private array $values = [];
 =======
     private $values = [];
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    private array $values = [];
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
 
     /**
      * Массив параметров для компонентов.
@@ -74,14 +90,19 @@ class Container implements ContainerInterface {
      * @var array
      */
 <<<<<<< HEAD
+<<<<<<< HEAD
     private array $parameters = [];
 =======
     private $parameters = [];
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    private array $parameters = [];
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
 
     /**
      * Конструктор класса Container.
      *
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Этот метод инициализирует контейнер зависимостей с 
      * переданными компонентами.
@@ -93,12 +114,20 @@ class Container implements ContainerInterface {
      *
      * @param array $components Массив компонентов для инициализации.
 >>>>>>> 721b66b (Multiple improvements)
+=======
+     * Этот метод инициализирует контейнер зависимостей с 
+     * переданными компонентами.
+     *
+     * @param array $components Ассоциативный массив компонентов для контейнера.
+     * @return void
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      */
     public function __construct(array $components = []) {
         $this->push($components);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Магический метод для получения значения по идентификатору.
      *
@@ -112,16 +141,28 @@ class Container implements ContainerInterface {
     public function __get(string $id) {
 =======
      * Получает компонент по идентификатору.
+=======
+     * Магический метод для получения значения по идентификатору.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * @param string $id Идентификатор компонента.
-     * @return mixed Возвращает экземпляр компонента.
+     * Этот метод позволяет получать значения из контейнера, 
+     * используя синтаксис свойства.
+     *
+     * @param string $id Идентификатор компонента, который нужно получить.
+     * @return mixed Возвращает компонент с указанным идентификатором, 
+     *               или null, если компонент не найден.
      */
+<<<<<<< HEAD
     public function __get($id) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function __get(string $id) {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return $this->get($id);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Магический метод для установки значения по идентификатору.
      *
@@ -135,16 +176,28 @@ class Container implements ContainerInterface {
     public function __set(string $id, $component) {
 =======
      * Устанавливает компонент по идентификатору.
+=======
+     * Магический метод для установки значения по идентификатору.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * @param string $id Идентификатор компонента.
-     * @param mixed $component Экземпляр компонента.
+     * Этот метод позволяет устанавливать значения в контейнер, 
+     * используя синтаксис свойства.
+     *
+     * @param string $id Идентификатор компонента, который нужно установить.
+     * @param mixed $component Компонент, который нужно сохранить в контейнере.
+     * @return void
      */
+<<<<<<< HEAD
     public function __set($id, $component) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function __set(string $id, $component) {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         $this->set($id, $component);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Магический метод для вызова недоступных методов.
      *
@@ -161,17 +214,31 @@ class Container implements ContainerInterface {
     public function __call(string $id, array $parameters) {
 =======
      * Вызывает замыкание или метод по идентификатору.
+=======
+     * Магический метод для вызова недоступных методов.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * @param string $id Идентификатор компонента или метода.
-     * @param array $parameters Параметры для вызова.
-     * @return mixed Результат вызова.
+     * Этот метод позволяет вызывать методы контейнера, 
+     * используя синтаксис метода. Если метод не существует, 
+     * будет вызван этот метод, который делегирует вызов 
+     * другому методу.
+     *
+     * @param string $id Идентификатор метода, который нужно вызвать.
+     * @param array $parameters Массив параметров, передаваемых в метод.
+     * @return mixed Возвращает результат вызова метода, 
+     *               или false, если метод не найден.
      */
+<<<<<<< HEAD
     public function __call($id, $parameters) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function __call(string $id, array $parameters) {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return $this->resolveCallback($id, $parameters);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Создает экземпляр контейнера с переданными компонентами.
      *
@@ -185,12 +252,23 @@ class Container implements ContainerInterface {
     public static function create(array $components = []): Container {
 =======
      * Создаёт контейнер зависимостей.
+=======
+     * Создает экземпляр контейнера с переданными компонентами.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * @param array $components Массив компонентов для инициализации.
-     * @return static Возвращает экземпляр контейнера.
+     * Этот метод использует шаблон одиночки (singleton) для 
+     * создания единственного экземпляра контейнера и 
+     * инициализирует его с заданными компонентами.
+     *
+     * @param array $components Ассоциативный массив компонентов для инициализации контейнера.
+     * @return Container Возвращает экземпляр контейнера.
      */
+<<<<<<< HEAD
     public static function create(array $components = []) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public static function create(array $components = []): Container {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         static $container = null;
 
         if (is_null($container)) {
@@ -204,6 +282,7 @@ class Container implements ContainerInterface {
      * Получает компонент по идентификатору.
      *
 <<<<<<< HEAD
+<<<<<<< HEAD
      * Этот метод извлекает параметры для указанного идентификатора 
      * и возвращает соответствующий компонент из контейнера.
      *
@@ -215,18 +294,27 @@ class Container implements ContainerInterface {
 =======
      * Этот метод ищет и возвращает экземпляр компонента, зарегистрированного в контейнере, 
      * используя указанный идентификатор.
+=======
+     * Этот метод извлекает параметры для указанного идентификатора 
+     * и возвращает соответствующий компонент из контейнера.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * @param string $id Идентификатор компонента, который необходимо получить.
-     * @return mixed Возвращает экземпляр компонента, если он найден, 
-     *               или false, если компонент не зарегистрирован в контейнере.
+     * @param string $id Идентификатор компонента, который нужно получить.
+     * @return mixed Возвращает компонент с указанным идентификатором 
+     *               или false, если компонент не найден.
      */
+<<<<<<< HEAD
     public function get($id) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function get(string $id) {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         $parameters = $this->getParameters($id);
         return $this->resolveDefinition($id, $parameters);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Устанавливает компонент в контейнер.
      *
@@ -241,23 +329,31 @@ class Container implements ContainerInterface {
     public function set(string $id, $component, array $parameters = []) {
 =======
      * Устанавливает компонент в контейнере.
+=======
+     * Устанавливает компонент в контейнер.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод регистрирует новый компонент с заданным идентификатором в контейнере.
-     * Если компонент с указанным идентификатором уже существует, метод ничего не делает.
-     * Это позволяет избежать перезаписи уже зарегистрированных компонентов.
+     * Этот метод регистрирует компонент под заданным идентификатором, 
+     * если такой идентификатор еще не существует в контейнере.
      *
      * @param string $id Идентификатор компонента, который нужно установить.
-     * @param mixed $component Экземпляр или определение компонента, который нужно зарегистрировать.
-     * @param array $parameters Параметры, которые могут быть переданы компоненту (по умолчанию пустой массив).
+     * @param mixed $component Компонент, который нужно сохранить в контейнере.
+     * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
+     * @return void
      */
+<<<<<<< HEAD
     public function set($id, $component, $parameters = []) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function set(string $id, $component, array $parameters = []): void {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         if (!$this->has($id)) {
             $this->register($id, $component, $parameters);
         }
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Сбрасывает контейнер к начальному состоянию.
      *
@@ -271,22 +367,30 @@ class Container implements ContainerInterface {
     public function reset(): self {
 =======
      * Сбрасывает состояние контейнера.
+=======
+     * Сбрасывает контейнер к начальному состоянию.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод очищает все привязки, определения, экземпляры, значения и параметры, 
-     * зарегистрированные в контейнере. Он полезен для восстановления контейнера 
-     * к первоначальному состоянию, что позволяет избежать конфликтов 
-     * между компонентами при повторной инициализации.
+     * Этот метод очищает все привязки, определения, экземпляры, 
+     * значения и параметры в контейнере, возвращая его к состоянию 
+     * после инициализации.
      *
-     * @return $this Возвращает текущий экземпляр контейнера для удобства цепочного вызова.
+     * @return $this Возвращает текущий экземпляр контейнера для 
+     *               поддержки цепочки вызовов.
      */
+<<<<<<< HEAD
     public function reset() {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function reset(): self {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         $this->bindings = [];
         $this->definitions = [];
         $this->instances = [];
         $this->values = [];
         $this->parameters = [];
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         return $this; // Возвращает текущий экземпляр
     }
@@ -303,20 +407,27 @@ class Container implements ContainerInterface {
      * @return void
 =======
         return $this;
+=======
+        return $this; // Возвращает текущий экземпляр
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
     }
 
     /**
-     * Добавляет массив компонентов в контейнер.
+     * Добавляет компоненты в контейнер.
      *
-     * Этот метод принимает массив компонентов и регистрирует их в контейнере 
-     * с соответствующими идентификаторами. Каждый компонент будет 
-     * зарегистрирован с помощью метода `set`, который проверяет, 
-     * существует ли уже компонент с данным идентификатором.
+     * Этот метод принимает ассоциативный массив компонентов и 
+     * регистрирует каждый из них в контейнере, используя их 
+     * идентификаторы.
      *
      * @param array $components Ассоциативный массив компонентов, 
+<<<<<<< HEAD
      *                          где ключи представляют идентификаторы, 
      *                          а значения — соответствующие компоненты.
 >>>>>>> 721b66b (Multiple improvements)
+=======
+     *                          которые нужно добавить в контейнер.
+     * @return void
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      */
     public function push(array $components = []) {
         foreach ($components as $id => $component) {
@@ -327,6 +438,7 @@ class Container implements ContainerInterface {
     /**
      * Регистрирует компонент в контейнере.
      *
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Этот метод сохраняет компонент под указанным идентификатором 
      * и управляет его типом (привязка, определение или экземпляр).
@@ -342,13 +454,22 @@ class Container implements ContainerInterface {
      * и определяет его тип (привязка, определение или экземпляр). 
      * Если компонент является замыканием, он связывается с текущим контейнером.
      * Метод также подготавливает и сохраняет параметры для компонента.
+=======
+     * Этот метод сохраняет компонент под указанным идентификатором 
+     * и управляет его типом (привязка, определение или экземпляр).
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * @param string $id Идентификатор компонента, который нужно зарегистрировать.
-     * @param mixed $component Экземпляр компонента, определение класса или замыкание.
-     * @param array $parameters Параметры, которые могут быть переданы компоненту (по умолчанию пустой массив).
+     * @param string $id Идентификатор компонента для регистрации.
+     * @param mixed $component Компонент, который нужно зарегистрировать.
+     * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
+     * @return void
      */
+<<<<<<< HEAD
     public function register($id, $component, $parameters = []) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function register(string $id, $component, array $parameters = []) {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         if ($this->isBinding($component)) {
             $component = $component->bindTo($this);
             $this->bindings[$id] = true;
@@ -370,6 +491,7 @@ class Container implements ContainerInterface {
 
     /**
 <<<<<<< HEAD
+<<<<<<< HEAD
      * Удаляет компонент из контейнера по идентификатору.
      *
      * Этот метод удаляет все связанные данные компонента, включая 
@@ -381,16 +503,22 @@ class Container implements ContainerInterface {
     public function unregister(string $id) {
 =======
      * Удаляет компонент из контейнера.
+=======
+     * Удаляет компонент из контейнера по идентификатору.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод удаляет компонент с указанным идентификатором из контейнера. 
-     * Он очищает все привязки, определения, экземпляры, значения и параметры 
-     * для данного идентификатора, что позволяет освободить ресурсы 
-     * и предотвратить возможные конфликты в будущем.
+     * Этот метод удаляет все связанные данные компонента, включая 
+     * привязки, определения, экземпляры, значения и параметры.
      *
      * @param string $id Идентификатор компонента, который нужно удалить.
+     * @return void
      */
+<<<<<<< HEAD
     public function unregister($id) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function unregister(string $id) {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         unset(
             $this->bindings[$id],
             $this->definitions[$id],
@@ -401,6 +529,7 @@ class Container implements ContainerInterface {
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Разрешает компонент по идентификатору и параметрам.
      *
@@ -418,20 +547,27 @@ class Container implements ContainerInterface {
     public function resolve(string $id, $parameters = [], bool $callback = false) {
 =======
      * Разрешает компонент по идентификатору.
+=======
+     * Разрешает компонент по идентификатору и параметрам.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод ищет и возвращает экземпляр компонента, зарегистрированного 
-     * в контейнере, по указанному идентификатору. Метод обрабатывает 
-     * компоненты, которые могут быть привязками, определениями или экземплярами. 
-     * При необходимости он вызывает замыкания с параметрами.
+     * Этот метод возвращает компонент, соответствующий указанному 
+     * идентификатору. В зависимости от типа компонента 
+     * (привязка, определение, экземпляр) он может создавать новый 
+     * экземпляр или возвращать существующий.
      *
      * @param string $id Идентификатор компонента, который нужно разрешить.
-     * @param array $parameters Параметры для передачи при создании экземпляра (по умолчанию пустой массив).
-     * @param bool $callback Указывает, нужно ли вызывать замыкание, связанное с компонентом.
-     * @return mixed Возвращает экземпляр компонента, если он успешно разрешен, 
-     *               или false, если компонент не найден.
+     * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
+     * @param bool $callback Указывает, должен ли метод вызывать привязку (по умолчанию false).
+     * @return mixed Возвращает разрешенный компонент или false, 
+     *               если компонент не найден.
      */
+<<<<<<< HEAD
     public function resolve($id, $parameters = [], $callback = false) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function resolve(string $id, array $parameters = [], bool $callback = false) {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         if ($this->has($id)) {
             $component = $this->getComponent($id);
 
@@ -461,6 +597,7 @@ class Container implements ContainerInterface {
 
     /**
 <<<<<<< HEAD
+<<<<<<< HEAD
      * Разрешает определение компонента по идентификатору и параметрам.
      *
      * Этот метод вызывает метод разрешения для получения 
@@ -475,23 +612,30 @@ class Container implements ContainerInterface {
     public function resolveDefinition(string $id, $parameters = []) {
 =======
      * Разрешает определение компонента по его идентификатору.
+=======
+     * Разрешает определение компонента по идентификатору и параметрам.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод вызывает основной метод `resolve`, передавая ему 
-     * идентификатор компонента и параметры. Он предназначен для 
-     * упрощения разрешения определений компонентов, обеспечивая 
-     * единообразный интерфейс для их получения.
+     * Этот метод вызывает метод разрешения для получения 
+     * экземпляра компонента, который соответствует заданному 
+     * идентификатору.
      *
      * @param string $id Идентификатор компонента, который нужно разрешить.
-     * @param array $parameters Параметры для передачи при разрешении компонента (по умолчанию пустой массив).
-     * @return mixed Возвращает экземпляр компонента, если он успешно разрешен, 
-     *               или false, если компонент не найден.
+     * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
+     * @return mixed Возвращает разрешенный компонент или false, 
+     *               если компонент не найден.
      */
+<<<<<<< HEAD
     public function resolveDefinition($id, $parameters = []) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function resolveDefinition(string $id, array $parameters = []) {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return $this->resolve($id, $parameters);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Разрешает вызов метода по идентификатору и параметрам.
      *
@@ -507,24 +651,30 @@ class Container implements ContainerInterface {
     public function resolveCallback(string $id, array $parameters = []) {
 =======
      * Разрешает вызов по идентификатору с параметрами.
+=======
+     * Разрешает вызов метода по идентификатору и параметрам.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод вызывает основной метод `resolve`, передавая ему 
-     * идентификатор компонента, параметры и устанавливая флаг 
-     * `callback` в значение true. Это позволяет вызывать 
-     * замыкания (привязки), зарегистрированные в контейнере, 
-     * с соответствующими параметрами.
+     * Этот метод вызывает метод разрешения для получения 
+     * экземпляра компонента, который соответствует заданному 
+     * идентификатору, с указанием, что это вызов колбека.
      *
-     * @param string $id Идентификатор компонента или замыкания, которое нужно разрешить.
-     * @param array $parameters Параметры для передачи при вызове компонента (по умолчанию пустой массив).
-     * @return mixed Возвращает результат вызова замыкания, если оно успешно разрешено, 
-     *               или false, если компонент не найден.
+     * @param string $id Идентификатор компонента или метода, который нужно разрешить.
+     * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
+     * @return mixed Возвращает результат разрешения колбека или false, 
+     *               если компонент не найден.
      */
+<<<<<<< HEAD
     public function resolveCallback($id, $parameters = []) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function resolveCallback(string $id, array $parameters = []) {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return $this->resolve($id, $parameters, true);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Создает экземпляр компонента с указанными параметрами.
      *
@@ -539,20 +689,24 @@ class Container implements ContainerInterface {
     public function build(string $component, ?array $parameters = null): object {
 =======
      * Создаёт экземпляр компонента.
+=======
+     * Создает экземпляр компонента с указанными параметрами.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод использует отражение (Reflection) для создания 
-     * нового экземпляра указанного компонента. Он проверяет, 
-     * может ли класс быть инстанцирован, и вызывает конструктор 
-     * с необходимыми параметрами, если они указаны. Если 
-     * конструктор отсутствует, создаётся экземпляр без его вызова.
+     * Этот метод использует рефлексию для создания нового экземпляра 
+     * класса, передавая параметры, если они заданы.
      *
      * @param string $component Имя класса компонента, который нужно создать.
-     * @param array|null $parameters Параметры для конструктора (по умолчанию null).
-     * @return object|null Возвращает экземпляр компонента, если он успешно создан, 
-     *                     или null, если класс не может быть инстанцирован.
+     * @param array|null $parameters Параметры для передачи в конструктор компонента (по умолчанию null).
+     * @return object Возвращает новый экземпляр компонента.
+     * @throws ReflectionException Если не удается создать экземпляр компонента.
      */
+<<<<<<< HEAD
     public function build($component, $parameters = null) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function build(string $component, ?array $parameters = null): object {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         $reflector = new ReflectionClass($component);
 
         if ($reflector->isInstantiable()) {
@@ -574,6 +728,7 @@ class Container implements ContainerInterface {
 
     /**
 <<<<<<< HEAD
+<<<<<<< HEAD
      * Создает и регистрирует экземпляр компонента по идентификатору.
      *
      * Этот метод создает новый экземпляр компонента и 
@@ -588,19 +743,25 @@ class Container implements ContainerInterface {
     public function make(string $id, $component, $parameters = []): object {
 =======
      * Создаёт и регистрирует экземпляр компонента.
+=======
+     * Создает и регистрирует экземпляр компонента по идентификатору.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод создает экземпляр указанного компонента и 
-     * регистрирует его в контейнере по заданному идентификатору. 
-     * Он помечает компонент как экземпляр, позволяя избежать 
-     * повторного создания и использованию уже созданного экземпляра.
+     * Этот метод создает новый экземпляр компонента и 
+     * регистрирует его в контейнере, если он еще не зарегистрирован.
      *
-     * @param string $id Идентификатор компонента, который нужно зарегистрировать.
-     * @param mixed $component Экземпляр компонента или определение класса.
-     * @param array $parameters Параметры для передачи при создании экземпляра (по умолчанию пустой массив).
-     * @return object Возвращает экземпляр компонента, который был создан и зарегистрирован.
+     * @param string $id Идентификатор компонента, который нужно создать.
+     * @param mixed $component Компонент, который нужно создать.
+     * @param array $parameters Параметры для передачи в конструктор компонента (по умолчанию пустой массив).
+     * @return object Возвращает новый экземпляр компонента.
+     * @throws Exception Если не удается создать экземпляр компонента.
      */
+<<<<<<< HEAD
     public function make($id, $component, $parameters = []) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function make(string $id, $component, array $parameters = []): object {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         $this->instances[$id] = true;
         unset($this->definitions[$id]);
 
@@ -614,12 +775,16 @@ class Container implements ContainerInterface {
      * Проверяет, существует ли компонент с данным идентификатором.
      *
 <<<<<<< HEAD
+<<<<<<< HEAD
      * Этот метод является оберткой для метода hasComponent.
 =======
      * Этот метод определяет, зарегистрирован ли компонент в контейнере 
      * по указанному идентификатору. Он предоставляет простой интерфейс 
      * для проверки наличия компонента без получения его значения.
 >>>>>>> 721b66b (Multiple improvements)
+=======
+     * Этот метод является оберткой для метода hasComponent.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
      * @param string $id Идентификатор компонента, который нужно проверить.
      * @return bool Возвращает true, если компонент существует, иначе false.
@@ -629,6 +794,7 @@ class Container implements ContainerInterface {
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Проверяет, существует ли компонент с заданным идентификатором.
      *
@@ -641,20 +807,27 @@ class Container implements ContainerInterface {
     public function hasComponent(string $id): bool {
 =======
      * Проверяет, существует ли компонент в контейнере.
+=======
+     * Проверяет, существует ли компонент с заданным идентификатором.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод определяет, зарегистрирован ли компонент в контейнере 
-     * по указанному идентификатору. Он проверяет массив значений, 
-     * хранящий зарегистрированные компоненты.
+     * Этот метод возвращает true, если компонент зарегистрирован 
+     * в контейнере, и false в противном случае.
      *
-     * @param string $id Идентификатор компонента, который нужно проверить.
+     * @param string $id Идентификатор компонента для проверки.
      * @return bool Возвращает true, если компонент существует, иначе false.
      */
+<<<<<<< HEAD
     public function hasComponent($id) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function hasComponent(string $id): bool {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return isset($this->values[$id]);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Проверяет, существует ли привязка с данным идентификатором.
      *
@@ -667,20 +840,27 @@ class Container implements ContainerInterface {
     public function hasBinding(string $id): bool {
 =======
      * Проверяет, существует ли привязка для данного идентификатора.
+=======
+     * Проверяет, существует ли привязка с данным идентификатором.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод определяет, зарегистрировано ли замыкание (привязка) 
-     * в контейнере по указанному идентификатору. Он проверяет массив 
-     * привязок, чтобы определить наличие соответствующей записи.
+     * Этот метод определяет, зарегистрирована ли привязка 
+     * в контейнере по указанному идентификатору.
      *
-     * @param string $id Идентификатор компонента, для которого нужно проверить привязку.
+     * @param string $id Идентификатор привязки, который нужно проверить.
      * @return bool Возвращает true, если привязка существует, иначе false.
      */
+<<<<<<< HEAD
     public function hasBinding($id) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function hasBinding(string $id): bool {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return isset($this->bindings[$id]);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Проверяет, существует ли определение с данным идентификатором.
      *
@@ -693,20 +873,27 @@ class Container implements ContainerInterface {
     public function hasDefinition(string $id): bool {
 =======
      * Проверяет, существует ли определение для данного идентификатора.
+=======
+     * Проверяет, существует ли определение с данным идентификатором.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод определяет, зарегистрировано ли определение компонента 
-     * в контейнере по указанному идентификатору. Он проверяет массив 
-     * определений, чтобы установить наличие соответствующей записи.
+     * Этот метод определяет, зарегистрировано ли определение 
+     * в контейнере по указанному идентификатору.
      *
-     * @param string $id Идентификатор компонента, для которого нужно проверить определение.
+     * @param string $id Идентификатор определения, которое нужно проверить.
      * @return bool Возвращает true, если определение существует, иначе false.
      */
+<<<<<<< HEAD
     public function hasDefinition($id) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function hasDefinition(string $id): bool {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return isset($this->definitions[$id]);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Проверяет, существует ли экземпляр с данным идентификатором.
      *
@@ -719,20 +906,27 @@ class Container implements ContainerInterface {
     public function hasInstance(string $id): bool {
 =======
      * Проверяет, существует ли экземпляр для данного идентификатора.
+=======
+     * Проверяет, существует ли экземпляр с данным идентификатором.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод определяет, зарегистрирован ли экземпляр компонента 
-     * в контейнере по указанному идентификатору. Он проверяет массив 
-     * экземпляров, чтобы установить наличие соответствующей записи.
+     * Этот метод определяет, зарегистрирован ли экземпляр 
+     * в контейнере по указанному идентификатору.
      *
-     * @param string $id Идентификатор компонента, для которого нужно проверить экземпляр.
+     * @param string $id Идентификатор экземпляра, который нужно проверить.
      * @return bool Возвращает true, если экземпляр существует, иначе false.
      */
+<<<<<<< HEAD
     public function hasInstance($id) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function hasInstance(string $id): bool {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return isset($this->instances[$id]);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Проверяет, является ли компонент привязкой.
      *
@@ -747,19 +941,31 @@ class Container implements ContainerInterface {
      * в контейнере. Это полезно для различения между обычными компонентами 
      * и замыканиями, которые могут быть вызваны позже.
 >>>>>>> 721b66b (Multiple improvements)
+=======
+     * Проверяет, является ли компонент привязкой.
+     *
+     * Этот метод определяет, является ли переданный компонент 
+     * экземпляром Closure (замыкания), что указывает на то, 
+     * что он может быть использован как привязка в контейнере.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
      * @param mixed $component Компонент для проверки.
      * @return bool Возвращает true, если компонент является привязкой, иначе false.
      */
 <<<<<<< HEAD
+<<<<<<< HEAD
     public function isBinding($component): bool {
 =======
     public function isBinding($component) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function isBinding($component): bool {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return $component instanceof Closure;
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Проверяет, является ли компонент определением.
      *
@@ -772,21 +978,27 @@ class Container implements ContainerInterface {
     public function isDefinition($component): bool {
 =======
      * Проверяет, является ли компонент определением класса.
+=======
+     * Проверяет, является ли компонент определением.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод определяет, является ли данный компонент строкой, 
-     * представляющей имя класса, который существует. Это полезно для 
-     * различения между обычными экземплярами объектов и 
-     * определениями классов, которые могут быть инстанцированы.
+     * Этот метод определяет, является ли переданный компонент 
+     * строкой, представляющей имя класса, который существует.
      *
      * @param mixed $component Компонент для проверки.
-     * @return bool Возвращает true, если компонент является определением класса, иначе false.
+     * @return bool Возвращает true, если компонент является определением, иначе false.
      */
+<<<<<<< HEAD
     public function isDefinition($component) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function isDefinition($component): bool {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return is_string($component) && class_exists($component);
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Проверяет, является ли компонент экземпляром.
      *
@@ -799,23 +1011,29 @@ class Container implements ContainerInterface {
     public function isInstance($component): bool {
 =======
      * Проверяет, является ли компонент экземпляром объекта.
+=======
+     * Проверяет, является ли компонент экземпляром.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод определяет, является ли данный компонент объектом, 
-     * и не является ли он привязкой (Closure). Это позволяет различать 
-     * между обычными экземплярами объектов и компонентами, которые 
-     * зарегистрированы как замыкания.
+     * Этот метод определяет, является ли переданный компонент 
+     * объектом и не является ли он привязкой.
      *
      * @param mixed $component Компонент для проверки.
-     * @return bool Возвращает true, если компонент является экземпляром объекта, иначе false.
+     * @return bool Возвращает true, если компонент является экземпляром, иначе false.
      */
+<<<<<<< HEAD
     public function isInstance($component) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function isInstance($component): bool {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return !$this->isBinding($component) && is_object($component);
     }
 
     /**
      * Получает компонент по идентификатору.
      *
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Этот метод возвращает компонент, зарегистрированный в контейнере 
      * по указанному идентификатору.
@@ -844,33 +1062,42 @@ class Container implements ContainerInterface {
      * зарегистрированного в контейнере, по указанному идентификатору.
      * Он полезен для получения экземпляров компонентов, 
      * которые уже были зарегистрированы в контейнере.
+=======
+     * Этот метод возвращает компонент, зарегистрированный в контейнере 
+     * по указанному идентификатору.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
      * @param string $id Идентификатор компонента, который нужно получить.
-     * @return mixed|null Возвращает экземпляр компонента, если он найден, 
-     *                    или null, если компонент с данным идентификатором не зарегистрирован.
+     * @return mixed Возвращает компонент с указанным идентификатором 
+     *               или null, если компонент не найден.
      */
-    public function getCompotent($id) {
-        return $this->values[$id];
+    public function getCompotent(string $id) {
+        return $this->values[$id] ?? null; // null-объединение для обработки отсутствия значения
     }
 
     /**
-     * Устанавливает компонент в контейнере.
+     * Устанавливает компонент в контейнер по заданному идентификатору.
      *
-     * Этот метод регистрирует указанный компонент с заданным идентификатором 
-     * в контейнере, сохраняя его в массиве значений. Если компонент 
-     * является не нулевым, он будет добавлен в массив.
+     * Этот метод сохраняет переданный компонент под указанным идентификатором 
+     * в массиве значений контейнера, если компонент не является пустым.
      *
-     * @param string $id Идентификатор компонента, который нужно зарегистрировать.
-     * @param mixed $component Экземпляр компонента, который нужно установить.
+     * @param string $id Идентификатор компонента, который нужно установить.
+     * @param mixed $component Компонент, который нужно сохранить в контейнере.
+     * @return void
      */
+<<<<<<< HEAD
     public function setComponent($id, $component) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function setComponent(string $id, $component) {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         if ($component) {
             $this->values[$id] = $component;
         }
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Перечисляет все компоненты в контейнере.
      *
@@ -909,21 +1136,28 @@ class Container implements ContainerInterface {
     public function getParameters(string $id): ?array {
 =======
      * Получает параметры для компонента по его идентификатору.
+=======
+     * Получает параметры компонента по идентификатору.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод извлекает и возвращает параметры, связанные с 
-     * указанным идентификатором компонента. Если параметры не 
-     * были установлены, метод возвращает null.
+     * Этот метод возвращает массив параметров, зарегистрированных 
+     * для указанного идентификатора, или null, если параметры не найдены.
      *
      * @param string $id Идентификатор компонента, для которого нужно получить параметры.
-     * @return array|null Возвращает массив параметров, если они найдены, 
-     *                    или null, если параметры для данного идентификатора не установлены.
+     * @return array|null Возвращает массив параметров или null, 
+     *                    если параметры не найдены.
      */
+<<<<<<< HEAD
     public function getParameters($id) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function getParameters(string $id): ?array {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         return $this->parameters[$id] ?? null;
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Устанавливает параметры для компонента по заданному идентификатору.
      *
@@ -937,23 +1171,30 @@ class Container implements ContainerInterface {
     public function setParameters(string $id, array $parameters = []) {
 =======
      * Устанавливает параметры для компонента.
+=======
+     * Устанавливает параметры для компонента по заданному идентификатору.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод сохраняет указанные параметры в контейнере 
-     * под заданным идентификатором компонента. Если параметры 
-     * являются непустым массивом, они будут добавлены в массив 
-     * параметров для данного идентификатора.
+     * Этот метод сохраняет переданные параметры в массиве параметров 
+     * контейнера, если параметры не пустые.
      *
      * @param string $id Идентификатор компонента, для которого нужно установить параметры.
-     * @param array $parameters Параметры, которые нужно установить (по умолчанию пустой массив).
+     * @param array $parameters Ассоциативный массив параметров для компонента (по умолчанию пустой массив).
+     * @return void
      */
+<<<<<<< HEAD
     public function setParameters($id, $parameters = []) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function setParameters(string $id, array $parameters = []): void {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         if ($parameters) {
             $this->parameters[$id] = $parameters;
         }
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Подготавливает параметры для использования в контейнере.
      *
@@ -967,17 +1208,23 @@ class Container implements ContainerInterface {
     public function prepareParameters($parameters): array {
 =======
      * Подготавливает параметры для использования.
+=======
+     * Подготавливает параметры для использования в контейнере.
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      *
-     * Этот метод проверяет, являются ли переданные параметры массивом. 
-     * Если параметры не являются массивом, они оборачиваются в массив. 
-     * Это позволяет унифицировать способ передачи параметров, 
-     * обеспечивая, что они всегда будут представлены в виде массива.
+     * Этот метод принимает параметры и преобразует их в массив, 
+     * если они не являются массивом. Это обеспечивает согласованность 
+     * при передаче параметров в другие методы.
      *
      * @param mixed $parameters Параметры, которые нужно подготовить.
-     * @return array Возвращает массив параметров.
+     * @return array Возвращает массив подготовленных параметров.
      */
+<<<<<<< HEAD
     public function prepareParameters($parameters) {
 >>>>>>> 721b66b (Multiple improvements)
+=======
+    public function prepareParameters($parameters): array {
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
         if (!is_array($parameters)) {
             $parameters = [$parameters];
         }
@@ -987,6 +1234,7 @@ class Container implements ContainerInterface {
     /**
      * Вызывает замыкание с переданными параметрами.
      *
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Этот метод принимает замыкание и массив параметров, 
      * затем вызывает замыкание с использованием 
@@ -1003,6 +1251,14 @@ class Container implements ContainerInterface {
      * @param Closure $callback Замыкание, которое нужно вызвать.
      * @param array $parameters Параметры для передачи в замыкание (по умолчанию пустой массив).
 >>>>>>> 721b66b (Multiple improvements)
+=======
+     * Этот метод принимает замыкание и массив параметров, 
+     * затем вызывает замыкание с использованием 
+     * call_user_func_array для передачи параметров.
+     *
+     * @param Closure $callback Замыкание, которое нужно вызвать.
+     * @param array $parameters Параметры, которые нужно передать в замыкание (по умолчанию пустой массив).
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
      * @return mixed Возвращает результат выполнения замыкания.
      */
     public function callBinding(Closure $callback, array $parameters = []) {
@@ -1012,23 +1268,22 @@ class Container implements ContainerInterface {
 =======
 
     /**
-     * Выводит список компонентов, зарегистрированных в контейнере.
+     * Перечисляет все компоненты в контейнере.
      *
-     * Этот метод формирует и возвращает строку с информацией о всех компонентах, 
-     * зарегистрированных в контейнере, включая их идентификаторы и типы. 
-     * Метод также может выводить список в формате, удобном для чтения, 
-     * если параметр verbose установлен в true.
+     * Этот метод выводит список всех зарегистрированных компонентов, 
+     * их идентификаторов и типов. Может выводить в подробном режиме 
+     * в зависимости от переданного параметра.
      *
-     * @param bool $verbose Указывает, нужно ли выводить список компонентов на экран (по умолчанию true).
-     * @return string Возвращает строку с информацией о компонентах в контейнере.
+     * @param bool $verbose Указывает, нужно ли выводить подробную информацию (по умолчанию true).
+     * @return string Возвращает строку с информацией о компонентах.
      */
-    public function listComponents($verbose = true) {
+    public function listComponents(bool $verbose = true): string {
         $result = "\nid\t\tcomponent\n--\t\t---------\n";
 
         foreach ($this->values as $id => $component) {
             $containerType = 'unknown';
             if ($this->isBinding($component)) { $containerType = 'binding'; }
-            if ($this->isDefinition($component)) { $containerType = 'definition'; }
+            if ($this->isDefinition($component)) { $containerType = 'definition';}
             if ($this->isInstance($component)) { $containerType = 'instance'; }
             if (is_array($component)) { $containerType = 'array'; }
             $result .= $id . "\t\t" . $containerType . "\n";
@@ -1042,26 +1297,25 @@ class Container implements ContainerInterface {
     }
 
     /**
-     * Выполняет тестирование с возможностью получения аргументов.
+     * Тестовый метод для проверки аргументов.
      *
-     * Этот метод принимает флаг и, в зависимости от его значения, 
-     * возвращает true или форматированную строку с аргументами, 
-     * переданными в метод. Если флаг установлен в true, метод 
-     * возвращает true, что может использоваться для проверки 
-     * успешности вызова. Если флаг false, метод возвращает 
-     * отформатированное представление всех переданных аргументов.
+     * Этот метод возвращает true, если передан флаг, 
+     * в противном случае он возвращает строку с выводом 
+     * аргументов, переданных в метод.
      *
-     * @param bool $flag Указывает, следует ли возвращать true (по умолчанию false).
-     * @return mixed Возвращает true, если флаг установлен в true, 
-     *               или строку с аргументами в формате <pre> если флаг false.
+     * @param bool $flag Указывает, нужно ли возвращать true (по умолчанию false).
+     * @return mixed Возвращает true или строку с выводом аргументов.
      */
-    public function test($flag = false) {
+    public function test(bool $flag = false) {
         if ($flag) {
             return true;
         }
 
         return '<pre>' . print_r(func_get_args(), true) . '</pre>';
     }
+<<<<<<< HEAD
 
 >>>>>>> 721b66b (Multiple improvements)
+=======
+>>>>>>> dbef408 (Updated type hinting for Application and Container)
 }
