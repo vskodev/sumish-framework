@@ -1,74 +1,170 @@
 <?php
 
+/**
+ * Sumish Framework (https://sumish.xyz)
+ *
+ * @license https://sumish.xyz/LICENSE (MIT License)
+ */
+
 namespace Sumish;
 
-define('DIR_ROOT', getcwd());
-define('DIR_APP', DIR_ROOT . '/app');
-define('DEBUG', true);
-
-ini_set('display_errors', DEBUG);
-ini_set('track_errors', DEBUG);
-
+/**
+ * Главный класс для инициализации и управления приложением.
+ *
+ * Этот класс инициализирует контейнер зависимостей, загружает маршруты, библиотеки, 
+ * а также управляет ошибками и отвечает за запуск контроллеров.
+ *
+ * @package Sumish
+ * @version 1.0.0
+ */
 class Application {
-    public $container;
+    /**
+     * Контейнер зависимостей.
+     *
+     * @var \Sumish\Container
+     */
+    private Container $container;
 
+    /**
+     * Конфигурация приложения.
+     *
+     * @var array
+     */
+    private array $config;
+
+    /**
+     * Конструктор класса Application.
+     *
+     * @param array $config Массив конфигурации приложения.
+     */
     public function __construct(array $config = []) {
-        set_error_handler([&$this, 'errorHandler']);
+        $this->config = $this->configure($config);
 
-        $this->container = Container::create(array_merge(self::componentsDefault(), (array)$config['components']));
+        $this->initializeContainer();
+        $this->initializeRoutes();
+        $this->initializeLibraries();
 
-        $this->config($config);
-
-        $this->load->routes($this->config['routes']);
-        $this->load->libraries($this->config['libraries']);
-
-        $this->response->addHeaders($this->config['headers']);
-        $this->response->setCompression($this->config['compression']);
+        $this->setupResponse();
     }
 
-    public function __get($id) {
-        return $this->container[$id];
+    /**
+     * Конфигурирует приложение, объединяя значения по умолчанию и пользовательские настройки.
+     *
+     * @param array $config Массив конфигурации.
+     * @return array Объединённый массив конфигурации.
+     */
+    private function configure(array $config) {
+        return array_replace_recursive(self::configDefault(), $config);
     }
 
-    public function __set($id, $component) {
-        $this->container[$id] = $component;
+    /**
+     * Инициализирует контейнер зависимостей.
+     *
+     * Создаёт контейнер и регистрирует конфигурацию.
+     */
+    private function initializeContainer() {
+        $components = $this->config['components'] ?? [];
+        $this->container = Container::create(array_merge(self::componentsDefault(), $components));
+        $this->container->register('config', $this->config);
     }
 
-    public function __call($id, $parameters) {
-        return $this->container->resolveCallback($id, $parameters);
+    /**
+     * Инициализирует маршруты.
+     *
+     * Загружает маршруты из конфигурации.
+     */
+    private function initializeRoutes() {
+        $routes = $this->config['routes'] ?? [];
+        $this->container->route->load($routes);
     }
 
+    /**
+     * Инициализирует библиотеки.
+     *
+     * Загружает библиотеки из конфигурации.
+     */
+    private function initializeLibraries() {
+        $libraries = $this->config['libraries'] ?? [];
+        $this->container->load->libraries($libraries);
+    }
+
+    /**
+     * Настраивает ответ.
+     *
+     * Устанавливает заголовки и параметры сжатия.
+     */
+    private function setupResponse() {
+        $this->container->response->addHeaders($this->config['headers'] ?? []);
+        $this->container->response->setCompression($this->config['compression'] ?? 0);
+    }
+
+    /**
+     * Запускает приложение.
+     *
+     * Проверяет наличие контроллера и вызывает его метод dispatch.
+     */
     public function run() {
-        if ($this->controller) {
-            $this->controller->dispatch();
+        if ($this->container->controller) {
+            $this->container->controller->dispatch();
         } else {
             $this->error(404);
         }
 
-        $this->response->init();
-        $this->document->init();
+        $this->container->response->init();
     }
 
+    /**
+     * Обрабатывает ошибки и устанавливает сообщение об ошибке в ответ.
+     *
+     * @param int $status Код статуса ошибки.
+     */
+    private function error($status) {
+        $errorText = 'Error ';
+    
+        switch ($status) {
+            case 404:
+                $errorText .= '404 Not Found';
+                break;
+            case 500:
+                $errorText .= '500 Internal Server Error';
+                break;
+            case 403:
+                $errorText .= '403 Forbidden';
+                break;
+            default:
+                $errorText .= 'Unknown Error';
+                break;
+        }
+    
+        $this->container->response->setOutput($errorText);
+    }
+
+    /**
+     * Возвращает массив компонентов по умолчанию.
+     *
+     * @return array Массив компонентов.
+     */
     public static function componentsDefault() {
         return [
+            'load' => \Sumish\Loader::class,
+            'route' => \Sumish\Router::class,
             'session' => \Sumish\Session::class,
             'request' => \Sumish\Request::class,
             'response' => \Sumish\Response::class,
-            'document' => \Sumish\Document::class,
-            'route' => \Sumish\Router::class,
-            'load' => \Sumish\Loader::class,
             'view' => \Sumish\View::class,
         ];
     }
 
+    /**
+     * Возвращает массив конфигурации по умолчанию.
+     *
+     * @return array Массив конфигурации.
+     */
     public static function configDefault() {
         return [
-            'routes' => [
-                '/' => 'home',
-            ],
-            'headers' => [
-                1000 => 'Content-Type: text/html; charset=utf-8',
-            ],
+            'routes' => ['/' => 'home'],
+            'libraries' => [],
+            'headers' => [1000 => 'Content-Type: text/html; charset=utf-8'],
             'components' => self::componentsDefault(),
             'db' => [
                 'driver' => 'mysql',
@@ -79,56 +175,6 @@ class Application {
                 'charset' => 'utf8',
             ],
             'compression' => 0,
-            'mode' => 'pro'
         ];
-    }
-
-    public function config($data, $name = null, $value = null) {
-        $config = $this->config;
-
-        if (is_array($data) && is_null($name) && is_null($value)) {
-            $config = $data;
-        } elseif (is_string($data) && !is_null($name) && is_null($value)) {
-            $config[$data] = $name;
-        } elseif (is_string($data) && is_string($name) && is_string($value)) {
-            $config[$data][$name] = $value;
-        } elseif (is_string($data) && is_null($name) && is_null($value)) {
-            return $config[$data];
-        } else {
-            return false;
-        }
-
-        $config = array_replace_recursive(
-            self::configDefault(), $config
-        );
-
-        $this->container->register('config', $config);
-
-        return true;
-    }
-
-    public function mode($mode, $callback) {
-        if ($mode == $this->config['mode']) {
-            call_user_func($callback);
-        }
-    }
-
-    public function error($status) {
-        $errorText = 'Error ';
-
-        switch ($status) {
-            case 404: { $errorText .= '404 Not Found'; } break;
-        }
-
-        $this->response->setOutput($errorText);
-    }
-
-    public function errorHandler($level, $message, $file, $line, $context) {
-        if($level === E_USER_ERROR || $level === E_USER_WARNING || $level === E_USER_NOTICE) {
-            $context = (false) ? ' <pre style="color: #555; background: #eee; padding: 15px">*** Context data:<br /><br />' . print_r($context, true) . '</pre>' : '';
-            $message .= defined('DEBUG') ? ' in ' . $file . ' on line ' .$line . $context: '';
-
-            die('<strong>System Error:</strong> ' . $message);
-        }
     }
 }
