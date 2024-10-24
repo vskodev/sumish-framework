@@ -152,34 +152,7 @@ class Container implements ContainerInterface {
         return $this->resolveDefinition($id, $parameters);
     }
 
-    /**
-     * Устанавливает компонент в контейнер.
-     *
-     * Этот метод регистрирует компонент под заданным идентификатором, 
-     * если такой идентификатор еще не существует в контейнере.
-     *
-     * @param string $id Идентификатор компонента, который нужно установить.
-     * @param mixed $component Компонент, который нужно сохранить в контейнере.
-     * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
-     * @return void
-     */
-    public function set(string $id, $component, array $parameters = []) {
-        if (!$this->has($id)) {
-            $this->register($id, $component, $parameters);
-        }
-    }
-
-    /**
-     * Сбрасывает контейнер к начальному состоянию.
-     *
-     * Этот метод очищает все привязки, определения, экземпляры, 
-     * значения и параметры в контейнере, возвращая его к состоянию 
-     * после инициализации.
-     *
-     * @return $this Возвращает текущий экземпляр контейнера для 
-     *               поддержки цепочки вызовов.
-     */
-    public function reset(): self {
+    public function reset() {
         $this->bindings = [];
         $this->definitions = [];
         $this->instances = [];
@@ -256,21 +229,7 @@ class Container implements ContainerInterface {
         );
     }
 
-    /**
-     * Разрешает компонент по идентификатору и параметрам.
-     *
-     * Этот метод возвращает компонент, соответствующий указанному 
-     * идентификатору. В зависимости от типа компонента 
-     * (привязка, определение, экземпляр) он может создавать новый 
-     * экземпляр или возвращать существующий.
-     *
-     * @param string $id Идентификатор компонента, который нужно разрешить.
-     * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
-     * @param bool $callback Указывает, должен ли метод вызывать привязку (по умолчанию false).
-     * @return mixed Возвращает разрешенный компонент или false, 
-     *               если компонент не найден.
-     */
-    public function resolve(string $id, $parameters = [], bool $callback = false) {
+    public function resolve($id, $parameters = [], $callback = false) {
         if ($this->has($id)) {
             $component = $this->getComponent($id);
 
@@ -298,19 +257,7 @@ class Container implements ContainerInterface {
         return false;
     }
 
-    /**
-     * Разрешает определение компонента по идентификатору и параметрам.
-     *
-     * Этот метод вызывает метод разрешения для получения 
-     * экземпляра компонента, который соответствует заданному 
-     * идентификатору.
-     *
-     * @param string $id Идентификатор компонента, который нужно разрешить.
-     * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
-     * @return mixed Возвращает разрешенный компонент или false, 
-     *               если компонент не найден.
-     */
-    public function resolveDefinition(string $id, $parameters = []) {
+    public function resolveDefinition($id, $parameters = []) {
         return $this->resolve($id, $parameters);
     }
 
@@ -361,19 +308,7 @@ class Container implements ContainerInterface {
         return $component;
     }
 
-    /**
-     * Создает и регистрирует экземпляр компонента по идентификатору.
-     *
-     * Этот метод создает новый экземпляр компонента и 
-     * регистрирует его в контейнере, если он еще не зарегистрирован.
-     *
-     * @param string $id Идентификатор компонента, который нужно создать.
-     * @param mixed $component Компонент, который нужно создать.
-     * @param array $parameters Параметры для передачи в конструктор компонента (по умолчанию пустой массив).
-     * @return object Возвращает новый экземпляр компонента.
-     * @throws Exception Если не удается создать экземпляр компонента.
-     */
-    public function make(string $id, $component, $parameters = []): object {
+    public function make($id, $component, $parameters = []) {
         $this->instances[$id] = true;
         unset($this->definitions[$id]);
 
@@ -487,18 +422,8 @@ class Container implements ContainerInterface {
         return !$this->isBinding($component) && is_object($component);
     }
 
-    /**
-     * Получает компонент по идентификатору.
-     *
-     * Этот метод возвращает компонент, зарегистрированный в контейнере 
-     * по указанному идентификатору.
-     *
-     * @param string $id Идентификатор компонента, который нужно получить.
-     * @return mixed Возвращает компонент с указанным идентификатором 
-     *               или null, если компонент не найден.
-     */
-    public function getComponent(string $id) {
-        return $this->values[$id] ?? null; // null-объединение для обработки отсутствия значения
+    public function getCompotent($id) {
+        return $this->values[$id];
     }
 
     /**
@@ -517,56 +442,11 @@ class Container implements ContainerInterface {
         }
     }
 
-    /**
-     * Перечисляет все компоненты в контейнере.
-     *
-     * Этот метод проходит по всем зарегистрированным компонентам в контейнере
-     * и создает ассоциативный массив, где ключами являются идентификаторы компонентов,
-     * а значениями — их типы (привязка, определение, экземпляр или массив).
-     *
-     * @return array Возвращает ассоциативный массив с идентификаторами компонентов и их типами.
-     */
-    public function listComponents(): array {
-        $components = [];
-
-        foreach ($this->values as $id => $component) {
-            $type = 'unknown';
-            if ($this->isBinding($component)) { $type = 'binding'; }
-            if ($this->isDefinition($component)) { $type = 'definition'; }
-            if ($this->isInstance($component)) { $type = 'instance'; }
-            if (is_array($component)) { $type = 'array'; }
-
-            $components[$id] = $type;
-        }
-
-        return $components;
-    }
-
-    /**
-     * Получает параметры компонента по идентификатору.
-     *
-     * Этот метод возвращает массив параметров, зарегистрированных 
-     * для указанного идентификатора, или null, если параметры не найдены.
-     *
-     * @param string $id Идентификатор компонента, для которого нужно получить параметры.
-     * @return array|null Возвращает массив параметров или null, 
-     *                    если параметры не найдены.
-     */
-    public function getParameters(string $id): ?array {
+    public function getParameters($id) {
         return $this->parameters[$id] ?? null;
     }
 
-    /**
-     * Устанавливает параметры для компонента по заданному идентификатору.
-     *
-     * Этот метод сохраняет переданные параметры в массиве параметров 
-     * контейнера, если параметры не пустые.
-     *
-     * @param string $id Идентификатор компонента, для которого нужно установить параметры.
-     * @param array $parameters Ассоциативный массив параметров для компонента (по умолчанию пустой массив).
-     * @return void
-     */
-    public function setParameters(string $id, array $parameters = []) {
+    public function setParameters($id, $parameters = []) {
         if ($parameters) {
             $this->parameters[$id] = $parameters;
         }
@@ -602,5 +482,32 @@ class Container implements ContainerInterface {
      */
     public function callBinding(Closure $callback, array $parameters = []) {
         return call_user_func_array($callback, $parameters);
+    }
+
+    public function listComponents($verbose = true) {
+        $result = "\nid\t\tcomponent\n--\t\t---------\n";
+
+        foreach ($this->values as $id => $component) {
+            $containerType = 'unknown';
+            if ($this->isBinding($component)) { $containerType = 'binding'; }
+            if ($this->isDefinition($component)) { $containerType = 'definition';}
+            if ($this->isInstance($component)) { $containerType = 'instance'; }
+            if (is_array($component)) { $containerType = 'array'; }
+            $result .= $id . "\t\t" . $containerType . "\n";
+        }
+
+        if ($verbose) {
+            echo '<pre>' . $result . '</pre>';
+        }
+
+        return $result;
+    }
+
+    public function test($flag = false) {
+        if ($flag) {
+            return true;
+        }
+
+        return '<pre>' . print_r(func_get_args(), true) . '</pre>';
     }
 }
