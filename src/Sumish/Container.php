@@ -163,7 +163,7 @@ class Container implements ContainerInterface {
      * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
      * @return void
      */
-    public function set(string $id, $component, array $parameters = []): void {
+    public function set(string $id, $component, array $parameters = []) {
         if (!$this->has($id)) {
             $this->register($id, $component, $parameters);
         }
@@ -270,7 +270,7 @@ class Container implements ContainerInterface {
      * @return mixed Возвращает разрешенный компонент или false, 
      *               если компонент не найден.
      */
-    public function resolve(string $id, array $parameters = [], bool $callback = false) {
+    public function resolve(string $id, $parameters = [], bool $callback = false) {
         if ($this->has($id)) {
             $component = $this->getCompotent($id);
 
@@ -310,7 +310,7 @@ class Container implements ContainerInterface {
      * @return mixed Возвращает разрешенный компонент или false, 
      *               если компонент не найден.
      */
-    public function resolveDefinition(string $id, array $parameters = []) {
+    public function resolveDefinition(string $id, $parameters = []) {
         return $this->resolve($id, $parameters);
     }
 
@@ -373,7 +373,7 @@ class Container implements ContainerInterface {
      * @return object Возвращает новый экземпляр компонента.
      * @throws Exception Если не удается создать экземпляр компонента.
      */
-    public function make(string $id, $component, array $parameters = []): object {
+    public function make(string $id, $component, $parameters = []): object {
         $this->instances[$id] = true;
         unset($this->definitions[$id]);
 
@@ -541,7 +541,7 @@ class Container implements ContainerInterface {
      * @param array $parameters Ассоциативный массив параметров для компонента (по умолчанию пустой массив).
      * @return void
      */
-    public function setParameters(string $id, array $parameters = []): void {
+    public function setParameters(string $id, array $parameters = []) {
         if ($parameters) {
             $this->parameters[$id] = $parameters;
         }
