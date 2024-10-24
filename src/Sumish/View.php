@@ -121,15 +121,7 @@ class View {
      * @param array $data Данные для передачи в шаблон.
      * @return string|false Сгенерированный HTML-код или false при ошибке.
      */
-<<<<<<< HEAD
-<<<<<<< HEAD
     protected function processDynamic(array $data = []) {
-=======
-    protected function processDynamic(array $data = []): string|false {
->>>>>>> 721b66b (Multiple improvements)
-=======
-    protected function processDynamic(array $data = []) {
->>>>>>> 287b4bf (Fixed View)
         $file = $this->file;
 
         if ($file && $data) {
