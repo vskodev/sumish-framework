@@ -313,6 +313,7 @@ class Container implements ContainerInterface {
         return $this->resolveDefinition($id, $parameters);
     }
 
+<<<<<<< HEAD
     /**
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -384,6 +385,9 @@ class Container implements ContainerInterface {
 =======
     public function reset(): self {
 >>>>>>> dbef408 (Updated type hinting for Application and Container)
+=======
+    public function reset() {
+>>>>>>> a83d9dfe28745a5fb780ce5b33666b2d7e57012f
         $this->bindings = [];
         $this->definitions = [];
         $this->instances = [];
@@ -528,6 +532,7 @@ class Container implements ContainerInterface {
         );
     }
 
+<<<<<<< HEAD
     /**
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -568,6 +573,9 @@ class Container implements ContainerInterface {
 =======
     public function resolve(string $id, array $parameters = [], bool $callback = false) {
 >>>>>>> dbef408 (Updated type hinting for Application and Container)
+=======
+    public function resolve($id, $parameters = [], $callback = false) {
+>>>>>>> a83d9dfe28745a5fb780ce5b33666b2d7e57012f
         if ($this->has($id)) {
             $component = $this->getComponent($id);
 
@@ -595,6 +603,7 @@ class Container implements ContainerInterface {
         return false;
     }
 
+<<<<<<< HEAD
     /**
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -631,6 +640,9 @@ class Container implements ContainerInterface {
 =======
     public function resolveDefinition(string $id, array $parameters = []) {
 >>>>>>> dbef408 (Updated type hinting for Application and Container)
+=======
+    public function resolveDefinition($id, $parameters = []) {
+>>>>>>> a83d9dfe28745a5fb780ce5b33666b2d7e57012f
         return $this->resolve($id, $parameters);
     }
 
@@ -726,6 +738,7 @@ class Container implements ContainerInterface {
         return $component;
     }
 
+<<<<<<< HEAD
     /**
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -762,6 +775,9 @@ class Container implements ContainerInterface {
 =======
     public function make(string $id, $component, array $parameters = []): object {
 >>>>>>> dbef408 (Updated type hinting for Application and Container)
+=======
+    public function make($id, $component, $parameters = []) {
+>>>>>>> a83d9dfe28745a5fb780ce5b33666b2d7e57012f
         $this->instances[$id] = true;
         unset($this->definitions[$id]);
 
@@ -1030,6 +1046,7 @@ class Container implements ContainerInterface {
         return !$this->isBinding($component) && is_object($component);
     }
 
+<<<<<<< HEAD
     /**
      * Получает компонент по идентификатору.
      *
@@ -1044,6 +1061,10 @@ class Container implements ContainerInterface {
      */
     public function getComponent(string $id) {
         return $this->values[$id] ?? null; // null-объединение для обработки отсутствия значения
+=======
+    public function getCompotent($id) {
+        return $this->values[$id];
+>>>>>>> a83d9dfe28745a5fb780ce5b33666b2d7e57012f
     }
 
     /**
@@ -1096,6 +1117,7 @@ class Container implements ContainerInterface {
         }
     }
 
+<<<<<<< HEAD
     /**
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1188,6 +1210,13 @@ class Container implements ContainerInterface {
 =======
     public function setParameters(string $id, array $parameters = []): void {
 >>>>>>> dbef408 (Updated type hinting for Application and Container)
+=======
+    public function getParameters($id) {
+        return $this->parameters[$id] ?? null;
+    }
+
+    public function setParameters($id, $parameters = []) {
+>>>>>>> a83d9dfe28745a5fb780ce5b33666b2d7e57012f
         if ($parameters) {
             $this->parameters[$id] = $parameters;
         }
@@ -1265,6 +1294,7 @@ class Container implements ContainerInterface {
         return call_user_func_array($callback, $parameters);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
     /**
@@ -1278,6 +1308,10 @@ class Container implements ContainerInterface {
      * @return string Возвращает строку с информацией о компонентах.
      */
     public function listComponents(bool $verbose = true): string {
+=======
+
+    public function listComponents($verbose = true) {
+>>>>>>> a83d9dfe28745a5fb780ce5b33666b2d7e57012f
         $result = "\nid\t\tcomponent\n--\t\t---------\n";
 
         foreach ($this->values as $id => $component) {
@@ -1296,6 +1330,7 @@ class Container implements ContainerInterface {
         return $result;
     }
 
+<<<<<<< HEAD
     /**
      * Тестовый метод для проверки аргументов.
      *
@@ -1307,6 +1342,9 @@ class Container implements ContainerInterface {
      * @return mixed Возвращает true или строку с выводом аргументов.
      */
     public function test(bool $flag = false) {
+=======
+    public function test($flag = false) {
+>>>>>>> a83d9dfe28745a5fb780ce5b33666b2d7e57012f
         if ($flag) {
             return true;
         }
@@ -1314,8 +1352,12 @@ class Container implements ContainerInterface {
         return '<pre>' . print_r(func_get_args(), true) . '</pre>';
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 >>>>>>> 721b66b (Multiple improvements)
 =======
 >>>>>>> dbef408 (Updated type hinting for Application and Container)
 }
+=======
+}
+>>>>>>> a83d9dfe28745a5fb780ce5b33666b2d7e57012f
