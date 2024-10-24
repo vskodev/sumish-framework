@@ -272,7 +272,7 @@ class Container implements ContainerInterface {
      */
     public function resolve(string $id, $parameters = [], bool $callback = false) {
         if ($this->has($id)) {
-            $component = $this->getCompotent($id);
+            $component = $this->getComponent($id);
 
             if ($callback) {
                 if ($this->hasBinding($id)) {
@@ -497,7 +497,7 @@ class Container implements ContainerInterface {
      * @return mixed Возвращает компонент с указанным идентификатором 
      *               или null, если компонент не найден.
      */
-    public function getCompotent(string $id) {
+    public function getComponent(string $id) {
         return $this->values[$id] ?? null; // null-объединение для обработки отсутствия значения
     }
 
@@ -515,6 +515,31 @@ class Container implements ContainerInterface {
         if ($component) {
             $this->values[$id] = $component;
         }
+    }
+
+    /**
+     * Перечисляет все компоненты в контейнере.
+     *
+     * Этот метод проходит по всем зарегистрированным компонентам в контейнере
+     * и создает ассоциативный массив, где ключами являются идентификаторы компонентов,
+     * а значениями — их типы (привязка, определение, экземпляр или массив).
+     *
+     * @return array Возвращает ассоциативный массив с идентификаторами компонентов и их типами.
+     */
+    public function listComponents(): array {
+        $components = [];
+
+        foreach ($this->values as $id => $component) {
+            $type = 'unknown';
+            if ($this->isBinding($component)) { $type = 'binding'; }
+            if ($this->isDefinition($component)) { $type = 'definition'; }
+            if ($this->isInstance($component)) { $type = 'instance'; }
+            if (is_array($component)) { $type = 'array'; }
+
+            $components[$id] = $type;
+        }
+
+        return $components;
     }
 
     /**
@@ -577,52 +602,5 @@ class Container implements ContainerInterface {
      */
     public function callBinding(Closure $callback, array $parameters = []) {
         return call_user_func_array($callback, $parameters);
-    }
-
-    /**
-     * Перечисляет все компоненты в контейнере.
-     *
-     * Этот метод выводит список всех зарегистрированных компонентов, 
-     * их идентификаторов и типов. Может выводить в подробном режиме 
-     * в зависимости от переданного параметра.
-     *
-     * @param bool $verbose Указывает, нужно ли выводить подробную информацию (по умолчанию true).
-     * @return string Возвращает строку с информацией о компонентах.
-     */
-    public function listComponents(bool $verbose = true): string {
-        $result = "\nid\t\tcomponent\n--\t\t---------\n";
-
-        foreach ($this->values as $id => $component) {
-            $containerType = 'unknown';
-            if ($this->isBinding($component)) { $containerType = 'binding'; }
-            if ($this->isDefinition($component)) { $containerType = 'definition';}
-            if ($this->isInstance($component)) { $containerType = 'instance'; }
-            if (is_array($component)) { $containerType = 'array'; }
-            $result .= $id . "\t\t" . $containerType . "\n";
-        }
-
-        if ($verbose) {
-            echo '<pre>' . $result . '</pre>';
-        }
-
-        return $result;
-    }
-
-    /**
-     * Тестовый метод для проверки аргументов.
-     *
-     * Этот метод возвращает true, если передан флаг, 
-     * в противном случае он возвращает строку с выводом 
-     * аргументов, переданных в метод.
-     *
-     * @param bool $flag Указывает, нужно ли возвращать true (по умолчанию false).
-     * @return mixed Возвращает true или строку с выводом аргументов.
-     */
-    public function test(bool $flag = false) {
-        if ($flag) {
-            return true;
-        }
-
-        return '<pre>' . print_r(func_get_args(), true) . '</pre>';
     }
 }
