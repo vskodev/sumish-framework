@@ -71,6 +71,10 @@ class Application {
         $this->container->register('config', $this->config);
     }
 
+    public function container() {
+        return $this->container;
+    }
+
     /**
      * Инициализирует маршруты приложения.
      *
