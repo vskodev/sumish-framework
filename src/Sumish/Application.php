@@ -15,7 +15,7 @@ namespace Sumish;
  * а также управляет ошибками и отвечает за запуск контроллеров.
  *
  * @package Sumish
- * @version 1.0.0
+ * @version 1.0.1
  */
 class Application {
     /**
@@ -125,8 +125,10 @@ class Application {
      * @return void
      */
     public function run() {
-        if ($this->container->controller) {
-            $this->container->controller->dispatch();
+        $controller = $this->container->controller;
+
+        if ($controller) {
+            $controller->dispatch();
         } else {
             $this->error(404);
         }
@@ -147,14 +149,14 @@ class Application {
         $errorText = 'Error ';
     
         switch ($status) {
+            case 403:
+                $errorText .= '403 Forbidden';
+                break;
             case 404:
                 $errorText .= '404 Not Found';
                 break;
             case 500:
                 $errorText .= '500 Internal Server Error';
-                break;
-            case 403:
-                $errorText .= '403 Forbidden';
                 break;
             default:
                 $errorText .= 'Unknown Error';
@@ -195,9 +197,9 @@ class Application {
     public static function configDefault(): array {
         return [
             'routes' => ['/' => 'home'],
-            'libraries' => [],
             'headers' => [1000 => 'Content-Type: text/html; charset=utf-8'],
             'components' => self::componentsDefault(),
+            'libraries' => [],
             'db' => [
                 'driver' => 'mysql',
                 'host' => '',
