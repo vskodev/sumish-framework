@@ -25,42 +25,42 @@ class Request {
      *
      * @var array
      */
-    public $get = [];
+    public array $get = [];
 
     /**
      * Данные, полученные через метод POST.
      *
      * @var array
      */
-    public $post = [];
+    public array $post = [];
 
     /**
      * Данные, полученные через метод REQUEST.
      *
      * @var array
      */
-    public $request = [];
+    public array $request = [];
 
     /**
      * Данные, полученные через куки.
      *
      * @var array
      */
-    public $cookie = [];
+    public array $cookie = [];
 
     /**
      * Данные, полученные через загруженные файлы.
      *
      * @var array
      */
-    public $files = [];
+    public array $files = [];
 
     /**
      * Данные, полученные через серверные переменные.
      *
      * @var array
      */
-    public $server = [];
+    public array $server = [];
     
     /**
      * Конструктор класса Request.
@@ -88,7 +88,7 @@ class Request {
      * @param mixed $data Данные, которые нужно очистить.
      * @return mixed Очищенные данные.
      */
-    public function clean($data) {
+    public function clean(array $data): array {
         if (is_array($data)) {
             foreach ($data as $key => $value) {
                 unset($data[$key]);
