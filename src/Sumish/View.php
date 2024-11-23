@@ -8,194 +8,68 @@
 
 namespace Sumish;
 
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+
 /**
- * Класс View для обработки и отображения шаблонов.
+ * Класс View для работы с шаблонами.
  *
- * Этот класс отвечает за рендеринг шаблонов, используя 
- * разные движки шаблонов (например, Twig). Он управляет 
- * загрузкой шаблонов, передачей данных и выводом 
- * сгенерированного HTML-кода.
- *
+ * Поддерживает Twig в качестве основного обработчика шаблонов.
+ * Возможно использовать для обработки шаблонов PHP.
+ * 
  * @package Sumish
  */
 class View {
     /**
-     * Контейнер зависимостей.
+     * Экземпляр Twig или null, если Twig недоступен.
      *
-     * @var \Sumish\Container
+     * @var Environment|null
      */
-    private Container $container;
+    private ?Environment $twig = null;
 
     /**
-     * Движок шаблонов по умолчанию.
-     *
-     * @var string
-     */
-    private $processor = 'twig';
-
-    /**
-     * Расширение файла шаблона.
+     * Путь к директории шаблонов.
      *
      * @var string
      */
-    public $ext = '.tpl';
+    private string $path;
 
     /**
-     * Путь к шаблону.
-     *
-     * @var string
+     * Инициализирует View и настраивает Twig, если он доступен.
      */
-    private $path;
+    public function __construct() {
+        $this->path = getcwd() . '/app/templates';
 
-    /**
-     * Полное имя файла шаблона.
-     *
-     * @var string
-     */
-    private $file;
-
-    /**
-     * Имя шаблона.
-     *
-     * @var string
-     */
-    private $template;
-
-    /**
-     * Конструктор класса View.
-     *
-     * @param Container $container Контейнер зависимостей, который будет использоваться для доступа к другим компонентам.
-     */
-    public function __construct(Container $container) {
-        $this->container = $container;
-    }
-
-    /**
-     * Рендерит данные для указанного шаблона.
-     *
-     * @param string $template Имя шаблона.
-     * @param array $data Данные для передачи в шаблон.
-     * @return string Сгенерированный HTML-код.
-     */
-    public function renderOutput(string $template, array $data = []): string {
-        $this->template = $template . $this->ext;
-        $this->detectPath();
-        return $this->process($data);
-    }
-
-    /**
-     * Рендерит шаблон и выводит его на экран.
-     *
-     * @param string $template Имя шаблона.
-     * @param array $data Данные для передачи в шаблон.
-     */
-    public function render($template, array $data = []) {
-        $output = $this->renderOutput($template, $data);
-        $this->print($output);
-    }
-
-    /**
-     * Обрабатывает данные и рендерит шаблон.
-     *
-     * @param array $data Данные для передачи в шаблон.
-     * @return string Сгенерированный HTML-код.
-     */
-    public function process($data) {
-        return $this->checkTwig()
-            ? $this->processTwig($data)
-            : $this->processDynamic($data);
-    }
-
-    /**
-     * Выводит текст.
-     *
-     * @param string $text Текст для вывода.
-     */
-    public function print($text) {
-        $this->container->response->print($text);
-    }
-
-    /**
-     * Обрабатывает шаблон динамически.
-     *
-     * @param array $data Данные для передачи в шаблон.
-     * @return string|false Сгенерированный HTML-код или false при ошибке.
-     */
-    protected function processDynamic(array $data = []) {
-        $file = $this->file;
-
-        if ($file && $data) {
-            if (is_file($this->file)) {
-                ob_start();
-                extract($data, EXTR_SKIP);
-                include_once($file);
-                $output = ob_get_contents();
-                ob_end_clean();
-                return $output;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Обрабатывает шаблон с использованием Twig.
-     *
-     * @param array $data Данные для передачи в шаблон.
-     * @return string|false Сгенерированный HTML-код или false при ошибке.
-     */
-    protected function processTwig(array $data = []) {
-        static $twig = null;
-        $checkTwig = false;
-        $template = $this->template;
-        $path = $this->path;
-
-        if (is_null($twig)) {
-            if (is_file($this->file)) {
-                $loader = new \Twig_Loader_Filesystem($path);
-                $twig = new \Twig_Environment($loader);
-                $checkTwig = true;
-            }
-        }
-
-        if ($checkTwig) {
-            return $twig->render($template, $data);
-        }
-
-        return false;
-    }
-
-    /**
-     * Проверяет, установлен ли Twig как движок шаблонов.
-     *
-     * @return bool Возвращает true, если Twig доступен, иначе false.
-     */
-    private function checkTwig() {
-        return ($this->processor == 'twig' &&
-                class_exists('Twig_Loader_Filesystem'));
-    }
-
-    /**
-     * Определяет путь к шаблону.
-     */
-    private function detectPath() {
-        $this->file = $this->getPathTemplate();
-        if (!is_file($this->file)) {
-            $this->file = $this->getPathTemplate(DIR_ROOT);
+        if (class_exists(Environment::class)) {
+            $loader = new FilesystemLoader($this->path);
+            $this->twig = new Environment($loader);
         }
     }
 
     /**
-     * Получает путь к шаблону.
+     * Рендерит шаблон.
      *
-     * @param string|null $path Путь к директории (по умолчанию - путь приложения).
-     * @return string Полный путь к шаблону.
+     * @param string $template Имя шаблона (например, '<name>/file').
+     * @param array $data Данные для шаблона.
+     * @return string Содержимое шаблона.
+     * @throws Exception Если файл не найден или произошла ошибка рендера.
      */
-    private function getPathTemplate($path = null) {
-        $this->path = is_null($path)
-              ? $this->container->app->path . '/templates'
-              : $path . '/templates/' . $this->container->app->name;
+    public function render(string $template, array $data = []): string {
+        // Если Twig доступен и файл с расширением .twig существует, используем Twig
+        if ($this->twig && is_file("{$this->path}/{$template}.twig")) {
+            return $this->twig->render("{$template}.twig", $data);
+        }
 
-        return $this->path . '/' . $this->template;
+        // В противном случае рендерим через PHP
+        $templatePath = "{$this->path}/{$template}.php";
+
+        if (!is_file($templatePath)) {
+            throw new \Exception("Template file not found: {$templatePath}");
+        }
+
+        extract($data, EXTR_OVERWRITE);
+        ob_start();
+        include $templatePath;
+        return ob_get_clean();
     }
 }
