@@ -13,7 +13,7 @@ use ReflectionClass;
 use Psr\Container\ContainerInterface;
 
 /**
- * Контейнер зависимостей для управления компонентами приложения.
+ * Контейнер зависимостей для управления компонентами.
  *
  * Этот класс реализует паттерн "Контейнер зависимостей", который 
  * позволяет регистрировать, разрешать и управлять компонентами 
@@ -120,11 +120,7 @@ class Container implements ContainerInterface {
     /**
      * Создает экземпляр контейнера с переданными компонентами.
      *
-     * Этот метод использует шаблон одиночки (singleton) для 
-     * создания единственного экземпляра контейнера и 
-     * инициализирует его с заданными компонентами.
-     *
-     * @param array $components Ассоциативный массив компонентов для инициализации контейнера.
+     * @param array $components Массив компонентов для инициализации контейнера.
      * @return Container Возвращает экземпляр контейнера.
      */
     public static function create(array $components = []): Container {
@@ -140,9 +136,6 @@ class Container implements ContainerInterface {
     /**
      * Получает компонент по идентификатору.
      *
-     * Этот метод извлекает параметры для указанного идентификатора 
-     * и возвращает соответствующий компонент из контейнера.
-     *
      * @param string $id Идентификатор компонента, который нужно получить.
      * @return mixed Возвращает компонент с указанным идентификатором 
      *               или false, если компонент не найден.
@@ -155,12 +148,9 @@ class Container implements ContainerInterface {
     /**
      * Устанавливает компонент в контейнер.
      *
-     * Этот метод регистрирует компонент под заданным идентификатором, 
-     * если такой идентификатор еще не существует в контейнере.
-     *
-     * @param string $id Идентификатор компонента, который нужно установить.
+     * @param string $id Идентификатор компонента.
      * @param mixed $component Компонент, который нужно сохранить в контейнере.
-     * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
+     * @param array $parameters Параметры для компонента.
      * @return void
      */
     public function set(string $id, $component, array $parameters = []) {
@@ -172,12 +162,7 @@ class Container implements ContainerInterface {
     /**
      * Сбрасывает контейнер к начальному состоянию.
      *
-     * Этот метод очищает все привязки, определения, экземпляры, 
-     * значения и параметры в контейнере, возвращая его к состоянию 
-     * после инициализации.
-     *
-     * @return $this Возвращает текущий экземпляр контейнера для 
-     *               поддержки цепочки вызовов.
+     * @return $this Возвращает текущий экземпляр контейнера.
      */
     public function reset(): self {
         $this->bindings = [];
@@ -211,12 +196,9 @@ class Container implements ContainerInterface {
     /**
      * Регистрирует компонент в контейнере.
      *
-     * Этот метод сохраняет компонент под указанным идентификатором 
-     * и управляет его типом (привязка, определение или экземпляр).
-     *
      * @param string $id Идентификатор компонента для регистрации.
      * @param mixed $component Компонент, который нужно зарегистрировать.
-     * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
+     * @param array $parameters Параметры для компонента.
      * @return void
      */
     public function register(string $id, $component, array $parameters = []) {
@@ -241,9 +223,6 @@ class Container implements ContainerInterface {
 
     /**
      * Удаляет компонент из контейнера по идентификатору.
-     *
-     * Этот метод удаляет все связанные данные компонента, включая 
-     * привязки, определения, экземпляры, значения и параметры.
      *
      * @param string $id Идентификатор компонента, который нужно удалить.
      * @return void
@@ -278,8 +257,7 @@ class Container implements ContainerInterface {
 
             if ($callback) {
                 if ($this->hasBinding($id)) {
-                    $callback = $this->callBinding($component, $parameters);
-                    return $callback;
+                    return call_user_func_array($component, $parameters);
                 }
 
                 if ($this->hasInstance($id) || is_array($component)) {
@@ -308,7 +286,7 @@ class Container implements ContainerInterface {
      * идентификатору.
      *
      * @param string $id Идентификатор компонента, который нужно разрешить.
-     * @param array $parameters Параметры для компонента (по умолчанию пустой массив).
+     * @param array $parameters Параметры для компонента.
      * @return mixed Возвращает разрешенный компонент или false, 
      *               если компонент не найден.
      */
@@ -369,9 +347,9 @@ class Container implements ContainerInterface {
      * Этот метод создает новый экземпляр компонента и 
      * регистрирует его в контейнере, если он еще не зарегистрирован.
      *
-     * @param string $id Идентификатор компонента, который нужно создать.
+     * @param string $id Идентификатор компонента.
      * @param mixed $component Компонент, который нужно создать.
-     * @param array $parameters Параметры для передачи в конструктор компонента (по умолчанию пустой массив).
+     * @param array $parameters Параметры для передачи в конструктор компонента.
      * @return object Возвращает новый экземпляр компонента.
      * @throws Exception Если не удается создать экземпляр компонента.
      */
@@ -392,7 +370,6 @@ class Container implements ContainerInterface {
      * Этот метод определяет, зарегистрирован ли компонент в контейнере 
      * по указанному идентификатору. Он предоставляет простой интерфейс 
      * для проверки наличия компонента без получения его значения.
-     * Этот метод является оберткой для метода hasComponent.
      *
      * @param string $id Идентификатор компонента, который нужно проверить.
      * @return bool Возвращает true, если компонент существует, иначе false.
@@ -459,7 +436,6 @@ class Container implements ContainerInterface {
      * Этот метод определяет, является ли переданный компонент 
      * экземпляром Closure (замыкания), что указывает на то, 
      * что он может быть использован как привязка в контейнере.
-     * Проверяет, является ли компонент привязкой (Closure).
      *
      * @param mixed $component Компонент для проверки.
      * @return bool Возвращает true, если компонент является привязкой, иначе false.
@@ -505,14 +481,11 @@ class Container implements ContainerInterface {
      *               или null, если компонент не найден.
      */
     public function getComponent(string $id) {
-        return $this->values[$id] ?? null; // null-объединение для обработки отсутствия значения
+        return $this->values[$id] ?? null;
     }
 
     /**
      * Устанавливает компонент в контейнер по заданному идентификатору.
-     *
-     * Этот метод сохраняет переданный компонент под указанным идентификатором 
-     * в массиве значений контейнера, если компонент не является пустым.
      *
      * @param string $id Идентификатор компонента, который нужно установить.
      * @param mixed $component Компонент, который нужно сохранить в контейнере.
@@ -594,19 +567,5 @@ class Container implements ContainerInterface {
             $parameters = [$parameters];
         }
         return $parameters;
-    }
-
-    /**
-     * Вызывает замыкание с переданными параметрами.
-     *
-     * Этот метод принимает замыкание и массив параметров, 
-     * затем вызывает замыкание с использованием 
-     * call_user_func_array для передачи параметров.
-     *
-     * @param Closure $callback Замыкание, которое нужно вызвать.
-     * @param array $parameters Параметры, которые нужно передать в замыкание (по умолчанию пустой массив).
-     */
-    public function callBinding(Closure $callback, array $parameters = []) {
-        return call_user_func_array($callback, $parameters);
     }
 }
