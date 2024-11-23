@@ -88,17 +88,32 @@ class Request {
      * @param mixed $data Данные, которые нужно очистить.
      * @return mixed Очищенные данные.
      */
-    public function clean(array $data): array {
-        if (is_array($data)) {
-            foreach ($data as $key => $value) {
-                unset($data[$key]);
+	public function clean($data) {
+		if (is_array($data)) {
+			foreach ($data as $key => $value) {
+				unset($data[$key]);
 
-                $data[$this->clean($key)] = $this->clean($value);
-            }
-        } else {
-            $data = htmlspecialchars($data, ENT_COMPAT, 'UTF-8');
+				$data[$this->clean($key)] = $this->clean($value);
+			}
+		} else {
+			$data = trim(htmlspecialchars($data, ENT_COMPAT, 'UTF-8'));
+		}
+
+		return $data;
+	}
+
+    /**
+     * Возвращает текущий URI запроса.
+     *
+     * @return string URI запроса без строки запроса.
+     */
+    public function getUri(): string {
+        $route = $this->get['route'] ?? null;
+
+        if (is_null($route)) {
+            $route = parse_url($this->server['REQUEST_URI'], PHP_URL_PATH);
         }
-
-        return $data;
+    
+        return '/' . trim($route, '/');
     }
 }
