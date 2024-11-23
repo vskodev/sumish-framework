@@ -9,169 +9,88 @@
 namespace Sumish;
 
 /**
- * Класс Loader для управления загрузкой моделей, контроллеров и библиотек.
+ * Класс Loader отвечает за динамическую загрузку моделей и библиотек.
  *
- * Этот класс предоставляет методы для динамической загрузки моделей, 
- * контроллеров и библиотек в приложении. Он облегчает процесс 
- * интеграции различных компонентов, обеспечивая удобный интерфейс 
- * для их подключения.
+ * Этот класс предоставляет методы для удобной загрузки
+ * необходимых компонентов с поддержкой кэширования.
  *
  * @package Sumish
  */
 class Loader {
     /**
-     * Контейнер зависимостей.
-     *
-     * @var \Sumish\Container
+     * Путь для загрузки текущего ресурса.
+     * @var string
      */
-    private Container $container;
+    private string $path;
+
+    /**
+     * Кэш загруженных экземпляров.
+     * @var array
+     */
+    private array $cache = [];
 
     /**
      * Конструктор класса Loader.
      *
-     * @param Container $container Контейнер зависимостей, который будет использоваться загрузчиком.
+     * Инициализирует объект загрузчика с контейнером зависимостей.
+     *
+     * @param Container $container Экземпляр контейнера для управления зависимостями.
      */
-    public function __construct(Container $container) {
+    function __construct(private Container $container) {
         $this->container = $container;
     }
 
     /**
-     * Загружает модель по указанному имени.
+     * Загружает модель по имени.
      *
-     * Этот метод принимает имя модели, проверяет наличие соответствующего 
-     * файла и включает его, если он найден. Также создаёт и возвращает 
-     * экземпляр модели.
-     *
-     * @param string $model Имя модели, которую нужно загрузить.
-     * @return mixed Возвращает экземпляр модели или false, если модель не найдена.
+     * @param string $name Имя модели (например, 'User').
+     * @return object Экземпляр загруженной модели.
+     * @throws Exception Если модель не найдена.
      */
-    public function model($model) {
-        if (strrpos($model, '/')) {
-            $parts = explode('/', $model);
-            $path = DIR_APP . '/' . $parts[0];
-            $model = $parts[1];
-        } else {
-            $path = $this->container->app->path;
-        }
-
-        $class = ucfirst($model) . 'Model';
-        $file = $path . '/model.php';
-
-        if (is_file($file)) {
-            require_once($file);
-        } else {
-            $file = $path . '/models/' . $class . '.php';
-
-            if (is_file($file)) {
-                require_once($file);
-            }
-        }
-
-        if (class_exists($class, false)) {
-            return new $class($this->container->config);
-        }
-
-        return false;
+    public function model(string $name): object {
+        $this->path = getcwd() . '/app/models';
+        return $this->resolve($name);
     }
 
     /**
-     * Загружает контроллер по указанному имени.
+     * Загружает библиотеку по имени.
      *
-     * Этот метод загружает и возвращает экземпляр контроллера, 
-     * вызывая соответствующее действие контроллера.
-     *
-     * @param string $controller Имя контроллера, который нужно загрузить.
-     * @return mixed Возвращает результат выполнения контроллера или false, если контроллер не найден.
+     * @param string $name Имя библиотеки (например, 'PdfGenerator').
+     * @return object Экземпляр загруженной библиотеки.
+     * @throws Exception Если библиотека не найдена.
      */
-    public function controller($controller) {
-        $app = new class {};
-        $app->action = 'indexAction';
-        $app->params = [];
-
-        if (is_string($controller)) {
-            $parts = explode('/', $controller);
-
-            $app->name = $parts[0];
-            $app->controller = ucfirst($app->name);
-            $app->path = DIR_APP . '/' . $app->name;
-
-            if (count($parts) > 1) {
-                $app->controller .= ucfirst($parts[1]);
-                $app->action = $parts[1] . 'Action';
-            }
-
-            $app->controller .= 'Controller';
-        }
-
-        return $this->container->route->execute($app, false);
+    public function library(string $name): object {
+        $this->path = getcwd() . '/app/libraries';
+        return $this->resolve($name);
     }
 
     /**
-     * Загружает библиотеку по указанному имени.
+     * Общий метод для загрузки и создания экземпляра класса.
      *
-     * Этот метод ищет и включает файл библиотеки, проверяя наличие 
-     * соответствующих файлов, а также вызывает метод init, 
-     * если он существует в классе библиотеки.
-     *
-     * @param string $library Имя библиотеки, которую нужно загрузить.
-     * @return bool Возвращает true, если библиотека успешно загружена.
+     * @param string $name Имя класса.
+     * @return object Экземпляр загруженного класса.
+     * @throws Exception Если файл или класс не найден.
      */
-    public function library($library) {
-        $class = ucfirst($library) . 'Library';
-        $path = dirname($this->container->app->path);
-        $scanPath = $path . '/*/library/' . $library . '/library.php';
-        $pathFiles[] = dirname(dirname(__DIR__)) . '/library/' . $library . '/library.php';
+    private function resolve(string $name): object {
+        $resourcePath = "{$this->path}/{$name}.php";
 
-        foreach (glob($scanPath) as $filename) {
-            $pathFiles[] = $filename;
+        $id = "{$this->path}.{$name}";
+        if (isset($this->cache[$id])) {
+            return $this->cache[$id];
         }
 
-        foreach ($pathFiles as $file) {
-            if (is_file($file)) {
-                require_once($file);
-                if (method_exists($class, 'init')) {
-                    (new $class())->init();
-                    break;
-                }
-            }
+        if (!file_exists($resourcePath)) {
+            throw new \Exception("Resource file {$resourcePath} not found.");
         }
 
-        return false;
-    }
+        require_once $resourcePath;
 
-    /**
-     * Загружает библиотеку по указанному имени (псевдоним для library).
-     *
-     * @param string $name Имя библиотеки, которую нужно загрузить.
-     * @return bool Возвращает true, если библиотека успешно загружена.
-     */
-    public function lib($name) {
-        return $this->library($name);
-    }
-
-    /**
-     * Загружает массив библиотек.
-     *
-     * Этот метод принимает массив имен библиотек и загружает каждую из них.
-     *
-     * @param array $libraries Массив имен библиотек, которые нужно загрузить.
-     */
-    public function libraries($libraries) {
-        if (is_array($libraries)) {
-            foreach ($libraries as $name) {
-                $this->lib($name);
-            }
+        $resourceName = "App\\" . ucfirst(basename($this->path)) . "\\{$name}";
+        if (!class_exists($resourceName)) {
+            throw new \Exception("Resource class {$resourceName} not found.");
         }
-    }
 
-    /**
-     * Загружает маршруты.
-     *
-     * Этот метод загружает маршруты в контейнере.
-     *
-     * @param array $routes Массив маршрутов, которые нужно загрузить.
-     */
-    public function routes($routes) {
-        $this->container->route->load($routes);
+        $this->cache[$id] = new $resourceName($this->container->config);
+        return $this->cache[$id];
     }
 }
