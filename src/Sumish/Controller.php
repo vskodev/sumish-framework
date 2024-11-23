@@ -9,7 +9,7 @@
 namespace Sumish;
 
 /**
- * Абстрактный класс контроллера для Sumish Framework.
+ * Абстрактный класс контроллера.
  *
  * Этот класс служит основой для всех контроллеров в приложении, 
  * обеспечивая доступ к контейнеру зависимостей и методам 
@@ -23,9 +23,16 @@ abstract class Controller {
     /**
      * Контейнер зависимостей.
      *
-     * @var \Sumish\Container
+     * @var Container
      */
     private Container $container;
+
+    /**
+     * Данные маршрута.
+     *
+     * @var array
+     */
+    public array $match = [];
 
     /**
      * Конструктор класса Controller.
@@ -44,21 +51,5 @@ abstract class Controller {
      */
     public function __get($id) {
         return $this->container->get($id);
-    }
-
-    /**
-     * Выполняет действие контроллера.
-     *
-     * Этот метод вызывает указанное действие контроллера с параметрами.
-     * Если действие не является вызываемым, ничего не происходит.
-     */
-    public function dispatch() {
-        $controller = $this->controller;
-        $action = $this->app->action;
-        $params = $this->app->params;
-
-        if (is_callable([$controller, $action])) {
-            call_user_func_array([$controller, $action], [$params]);
-        }
     }
 }
