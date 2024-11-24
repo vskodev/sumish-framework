@@ -113,7 +113,7 @@ class Router {
             }
         }
 
-        throw new NotFoundException("Route not found for URI: {$uri}", 404);
+        throw new NotFoundException("Route not found for URI: {$uri}");
     }
 
     /**
