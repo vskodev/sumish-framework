@@ -3,12 +3,14 @@
 /**
  * Sumish Framework (https://sumish.xyz)
  *
- * @license https://sumish.xyz/LICENSE (MIT License)
+ * @license https://sumish.mit-license.org (MIT License)
  */
+
+declare(strict_types=1);
 
 namespace Sumish;
 
-use Sumish\Exceptions\HandlerException;
+use Sumish\Exception\HandlerException;
 
 /**
  * Главный класс для инициализации и управления приложением.
@@ -18,7 +20,7 @@ use Sumish\Exceptions\HandlerException;
  *
  * @package Sumish
  */
-class Application {
+class Application {   
     /**
      * Контейнер зависимостей.
      *
@@ -29,27 +31,28 @@ class Application {
     /**
      * Конфигурация приложения.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     private array $config = [];
 
     /**
      * Конструктор класса Application.
      *
-     * @param array $config Массив конфигурации приложения.
+     * @param array{
+     *     components?: array<string, mixed>,
+     *     db?: array<string, mixed>,
+     * } $config Массив конфигурации приложения.
      */
     public function __construct(array $config = []) {
         $this->configure($config);
-        $this->container = Container::create($this->config['components']);
-        $this->container->register('config', $this->config);
-        // $this->container->load->libraries($this->config['libraries'] ?? []);
+        $this->container = Container::create($this->config);
     }
 
     /**
      * Конфигурирует приложение, объединяя значения по умолчанию.
      *
-     * @param array $config Массив конфигурации.
-     * @return array Объединённый массив конфигурации.
+     * @param array<string, mixed> $config Массив конфигурации.
+     * @return array<string, mixed> Объединённый массив конфигурации.
      */
     public function configure(array $config): array {
         $this->config = array_replace_recursive(self::configDefault(), $this->config, $config);
@@ -57,38 +60,37 @@ class Application {
     }
 
     /**
-     * Получает контейнер зависимостей.
+     * Возвращает конфигурацию приложения.
      *
-     * @return Container Объект контейнера зависимостей.
+     * @return array<string, mixed> Конфигурация приложения.
      */
-    public function container(): Container {
-        return $this->container;
+    public function config(): array {
+        return $this->config;
     }
 
     /**
      * Запуск приложения.
      *
      * @return void
+     * @throws \Throwable Если возникает исключение при обработке запроса.
      */
     public function run() {
         HandlerException::register();
 
-        $router = $this->container->router;
-        $request = $this->container->request;
-        $response = $this->container->response;
+        $request = $this->container->get('request');
+        $response = $this->container->get('response');
+        $router = $this->container->get('router');
 
-        $uri = $request->getUri();
-        
-        $response->addHeaders($this->config['headers'] ?? []);
-        $response->setCompression($this->config['compression'] ?? 0);
-
-        $matched = $router->push($this->config['routes'])->match($uri);
+        $requestUri = $request->getUri();
+        $matched = $router->push($this->config['routes'])->match($requestUri);
         $controller = $router->resolveController($matched);
 
         try {
             $data = $router->dispatch($controller);
+            $response->addHeaders($this->config['headers']);
+            $response->setCompression($this->config['compression']);
             $response->setOutput($data);
-            $response->init();
+            $response->send();
         } catch(\Throwable $exception) {
             HandlerException::handleException($exception);
         }
@@ -97,19 +99,19 @@ class Application {
     /**
      * Возвращает массив компонентов по умолчанию.
      *
-     * Этот метод предоставляет стандартный набор компонентов, 
+     * Этот метод предоставляет стандартный набор компонентов,
      * которые могут быть использованы приложением.
      *
-     * @return array Возвращает массив компонентов.
+     * @return array<string, class-string> Массив компонентов по умолчанию.
      */
     public static function componentsDefault(): array {
         return [
-            'loader' => \Sumish\Loader::class,
-            'router' => \Sumish\Router::class,
             'request' => \Sumish\Request::class,
             'response' => \Sumish\Response::class,
-            'session' => \Sumish\Session::class,
+            'router' => \Sumish\Router::class,
+            'loader' => \Sumish\Loader::class,
             'view' => \Sumish\View::class,
+            'session' => \Sumish\Session::class,
         ];
     }
 
@@ -120,12 +122,30 @@ class Application {
      * параметров, которые могут быть использованы приложением 
      * при его инициализации.
      *
-     * @return array Возвращает массив конфигурации.
+     * @return array{
+     *     routes: array<string, array{controller: string, action: string}>,
+     *     headers: array<int, string>,
+     *     components: array<string, class-string>,
+     *     libraries: array<string, mixed>,
+     *     db: array{
+     *         driver: string,
+     *         host: string,
+     *         database: string,
+     *         user: string,
+     *         password: string,
+     *         charset: string
+     *     },
+     *     compression: int
+     * }
      */
     public static function configDefault(): array {
         return [
             'routes' => ['/' => ['controller' => 'MainController', 'action' => 'index']],
-            'headers' => [1000 => 'Content-Type: text/html; charset=utf-8'],
+            'headers' => [
+                'Content-Type: text/html; charset=utf-8',
+                'X-Generator: Sumish',
+                'X-Powered-By: PHP'
+            ],
             'components' => self::componentsDefault(),
             'libraries' => [],
             'db' => [

@@ -3,8 +3,10 @@
 /**
  * Sumish Framework (https://sumish.xyz)
  *
- * @license https://sumish.xyz/LICENSE (MIT License)
+ * @license https://sumish.mit-license.org (MIT License)
  */
+
+declare(strict_types=1);
 
 namespace Sumish;
 
@@ -20,25 +22,24 @@ class Session {
     /**
      * Массив для хранения данных сессии.
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    public $data = [];
+    public array $data = [];
 
     /**
      * Конструктор класса Session.
      *
-     * Этот метод инициализирует сессию, устанавливая настройки безопасности.
+     * Инициализирует сессию, устанавливая настройки безопасности.
      */
     public function __construct() {
         if (!session_id()) {
-            ini_set('session.use_only_cookies', 'On'); // Использовать только куки для идентификации сессии
-            ini_set('session.use_trans_sid', 'Off');   // Отключить передачу идентификатора сессии через URL
-            ini_set('session.cookie_httponly', 'On');  // Запретить доступ к кукам из JavaScript
-
-            session_set_cookie_params(0, '/'); // Установить параметры куки
+            ini_set('session.use_only_cookies', '1');
+            ini_set('session.use_trans_sid', '0');
+            ini_set('session.cookie_httponly', '1');
+            session_set_cookie_params(0, '/');
             session_start();
         }
-
+    
         $this->data =& $_SESSION;
     }
 
@@ -47,7 +48,7 @@ class Session {
      *
      * @return string Идентификатор текущей сессии.
      */
-    public function getId() {
+    public function getId(): string {
         return session_id();
     }
 
@@ -56,7 +57,13 @@ class Session {
      *
      * @return bool Возвращает true, если сессия успешно уничтожена, иначе false.
      */
-    public function destroy() {
-        return session_destroy();
+    public function destroy(): bool {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_unset(); // Очищает данные сессии
+            session_destroy(); // Уничтожает сессию
+            $this->data = [];
+            return true;
+        }
+        return false;
     }
 }

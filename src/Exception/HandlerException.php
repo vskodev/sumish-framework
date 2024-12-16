@@ -3,27 +3,43 @@
 /**
  * Sumish Framework (https://sumish.xyz)
  *
- * @license https://sumish.xyz/LICENSE (MIT License)
+ * @license https://sumish.mit-license.org (MIT License)
  */
 
-namespace Sumish\Exceptions;
+namespace Sumish\Exception;
 
 use Throwable;
 use ErrorException;
-use Sumish\Exceptions\NotFoundException;
+use Sumish\View;
+use Sumish\Exception\NotFoundException;
 
 /**
  * Класс HandlerException для обработки ошибок и исключений.
  * 
- * @package Sumish
+ * @package Sumish\Exception
  */
 class HandlerException {
     /**
      * Инициализирует обработчики ошибок и исключений.
      */
     public static function register(): void {
-        set_exception_handler([self::class, 'handleException']);
         set_error_handler([self::class, 'handleError']);
+        set_exception_handler([self::class, 'handleException']);
+    }
+
+    /**
+     * Обрабатывает ошибки PHP.
+     *
+     * @param int $errno Уровень ошибки.
+     * @param string $errstr Сообщение об ошибке.
+     * @param string $errfile Файл, где возникла ошибка.
+     * @param int $errline Строка, где возникла ошибка.
+     * @throws ErrorException Исключение, преобразованное из ошибки.
+     * @return bool Всегда возвращает true, чтобы указать, что ошибка была обработана.
+     */
+    public static function handleError(int $errno, string $errstr, string $errfile, int $errline): bool {
+        // Преобразуем ошибку в исключение
+        throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
     /**
@@ -34,20 +50,6 @@ class HandlerException {
     public static function handleException(Throwable $exception): void {
         self::logException($exception);
         self::renderException($exception);
-    }
-
-    /**
-     * Обрабатывает ошибки PHP.
-     *
-     * @param int $severity Уровень ошибки.
-     * @param string $message Сообщение ошибки.
-     * @param string $file Файл, где возникла ошибка.
-     * @param int $line Строка, где возникла ошибка.
-     * @throws ErrorException Исключение, преобразованное из ошибки.
-     */
-    public static function handleError(int $severity, string $message, string $file, int $line): void {
-        // Преобразуем ошибку в исключение
-        throw new ErrorException($message, 0, $severity, $file, $line);
     }
 
     /**
@@ -91,13 +93,13 @@ class HandlerException {
      * резервное сообщение с заголовком и описанием ошибки.
      *
      * @param string $template Шаблон ошибки.
-     * @param array $data Данные для передачи в шаблон.
+     * @param array<string, mixed> $data Данные для шаблона.
      * @param string $title Заголовок ошибки для резервного HTML.
      * @param string $message Сообщение ошибки для резервного HTML.
      */
     protected static function renderTemplate(string $template, array $data, string $title, string $message): void {
         try {
-            $view = new \Sumish\View();
+            $view = new View();
             echo $view->render($template, $data);
         } catch (Throwable $exception) {
             echo "<h1>{$title}</h1>";
